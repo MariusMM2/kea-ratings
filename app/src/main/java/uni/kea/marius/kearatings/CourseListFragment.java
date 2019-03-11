@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,7 @@ public class CourseListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mCourseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//        mCourseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new CourseAdapter();
         mCourseRecyclerView.setAdapter(mAdapter);
