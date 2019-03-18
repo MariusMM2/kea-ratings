@@ -3,7 +3,6 @@ package uni.kea.marius.kearatings.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -42,7 +41,7 @@ public class Score implements Parcelable {
     public Map.Entry<String, Float> get(int position) {
         Set<Map.Entry<String, Float>> mapSet = ratings.entrySet();
 
-        return (new ArrayList<>(mapSet)).get(position);
+        return mapSet.toArray(new Map.Entry[]{})[position];
     }
 
     public float getAverageRating() {
