@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Fooster Barsten Longname" />
+            tools:text="Fooster Barsten Langtnavn" />
 
         <RatingBar
             android:id="@+id/item_rating"

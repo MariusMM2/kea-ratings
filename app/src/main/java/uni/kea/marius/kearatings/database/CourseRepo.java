@@ -19,7 +19,7 @@ public class CourseRepo extends AbstractRepo<Course> {
         super(context);
 
         Course course = new Course();
-        course.setName("Fooster Barsten Longname");
+        course.setName("Fooster Barsten Langtnavn");
 
         addAll(Arrays.asList(course,
                 new Course(),
