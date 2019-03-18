@@ -42,7 +42,7 @@ public class TeacherListFragment extends Fragment {
         private RatingBar mRatingBar;
 
         public TeacherHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item, parent, false));
+            super(inflater.inflate(R.layout.list_item_preview, parent, false));
             mNameTextView = itemView.findViewById(R.id.item_name);
             mRatingBar = itemView.findViewById(R.id.item_rating);
         }

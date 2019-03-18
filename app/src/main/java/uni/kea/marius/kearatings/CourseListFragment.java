@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,7 +67,7 @@ public class CourseListFragment extends Fragment {
         private RepoItem mItem;
 
         public CourseHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item, parent, false));
+            super(inflater.inflate(R.layout.list_item_preview, parent, false));
             mNameTextView = itemView.findViewById(R.id.item_name);
             mRatingBar = itemView.findViewById(R.id.item_rating);
             mExpandButton = itemView.findViewById(R.id.item_expand_button);
@@ -83,6 +84,7 @@ public class CourseListFragment extends Fragment {
         public void onClick(View v) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(DetailFragment.KEY_ITEM_PARCEL, mItem);
+            Log.d(TAG, "parcel: " + bundle.toString());
             mCallback.onItemSelected(bundle);
         }
     }

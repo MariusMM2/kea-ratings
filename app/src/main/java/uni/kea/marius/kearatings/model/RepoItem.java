@@ -93,6 +93,16 @@ public abstract class RepoItem implements Rateable, Parcelable {
     }
 
     @Override
+    public String toString() {
+        return "RepoItem{" +
+                "mType=" + mType +
+                ", mId=" + mId +
+                ", mName='" + mName + '\'' +
+                ", mScores=" + mScores.toString() +
+                '}';
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

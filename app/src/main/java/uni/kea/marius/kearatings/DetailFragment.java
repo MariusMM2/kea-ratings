@@ -6,11 +6,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import uni.kea.marius.kearatings.model.RepoItem;
+import uni.kea.marius.kearatings.model.Score;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -22,6 +30,7 @@ import uni.kea.marius.kearatings.model.RepoItem;
  * create an instance of this fragment.
  */
 public class DetailFragment extends Fragment {
+    private static final String TAG = "DetailFragment";
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_ITEM_BUNDLE = "item_bundle";
@@ -31,6 +40,9 @@ public class DetailFragment extends Fragment {
     private RepoItem mItem;
 
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView mRatingsRecyclerView;
+    private RatingsAdapter mAdapter;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -57,7 +69,9 @@ public class DetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mItem = getArguments().getBundle(ARG_ITEM_BUNDLE).getParcelable(KEY_ITEM_PARCEL);
+            Log.d(TAG, "item: " + mItem.toString());
         } else {
+            Log.e(TAG, "No arguments found");
             throw new IllegalStateException("Fragment arguments cannot be null");
         }
     }
@@ -73,6 +87,15 @@ public class DetailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         TextView tv = view.findViewById(R.id.tv);
         tv.setText(mItem.getName());
+
+        mRatingsRecyclerView = view.findViewById(R.id.ratings_recycler_view);
+        mRatingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mAdapter = new RatingsAdapter();
+        mRatingsRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setScore(mItem.getOverallScore());
+        mAdapter.notifyDataSetChanged();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -112,5 +135,55 @@ public class DetailFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private class RatingHolder extends RecyclerView.ViewHolder {
+        private Map.Entry<String, Float> mRating;
+        private TextView mNameView;
+        private RatingBar mRatingBar;
+
+
+        public RatingHolder(LayoutInflater layoutInflater, ViewGroup parent) {
+            super(layoutInflater.inflate(R.layout.list_item_rating_criteria, parent, false));
+            mNameView = itemView.findViewById(R.id.criteria_name);
+            mRatingBar = itemView.findViewById(R.id.criteria_rating);
+        }
+
+        public void bind(Map.Entry<String, Float> ratingEntry) {
+            mRating = ratingEntry;
+
+            mNameView.setText(mRating.getKey());
+            mRatingBar.setRating(mRating.getValue());
+        }
+    }
+
+    private class RatingsAdapter extends RecyclerView.Adapter<RatingHolder> {
+        private Score mScore;
+
+        @NonNull
+        @Override
+        public RatingHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            return new RatingHolder(layoutInflater, parent);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RatingHolder ratingHolder, int i) {
+
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull RatingHolder holder, int position, @NonNull List<Object> payloads) {
+            holder.bind(mScore.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mScore.getSize();
+        }
+
+        public void setScore(Score score) {
+            mScore = score;
+        }
     }
 }

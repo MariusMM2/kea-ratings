@@ -3,8 +3,10 @@ package uni.kea.marius.kearatings.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Score implements Parcelable {
     static final float MAX = 5f;
@@ -37,6 +39,12 @@ public class Score implements Parcelable {
         return ratings.get(key);
     }
 
+    public Map.Entry<String, Float> get(int position) {
+        Set<Map.Entry<String, Float>> mapSet = ratings.entrySet();
+
+        return (new ArrayList<>(mapSet)).get(position);
+    }
+
     public float getAverageRating() {
         float total = 0f;
         String[] topics = ratings.keySet().toArray(new String[]{});
@@ -45,6 +53,10 @@ public class Score implements Parcelable {
         }
 
         return total / topics.length;
+    }
+
+    public int getSize() {
+        return ratings.size();
     }
 
     public static Score average(Score... scores) {
@@ -68,6 +80,13 @@ public class Score implements Parcelable {
         }
 
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Score{" +
+                "ratings=" + ratings.toString() +
+                '}';
     }
 
     protected Score(Parcel in) {
