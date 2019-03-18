@@ -1,7 +1,5 @@
 package uni.kea.marius.kearatings;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,26 +18,13 @@ import uni.kea.marius.kearatings.model.Score;
 import java.util.List;
 import java.util.Map;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DetailFragment extends Fragment {
     private static final String TAG = "DetailFragment";
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_ITEM_BUNDLE = "item_bundle";
-    public static final String KEY_ITEM_PARCEL = "uni.kea.marius.kearatings.item_parcel";
 
-    // TODO: Rename and change types of parameters
+    // the fragment initialization parameter
+    private static final String ARG_ITEM_PARCEL = "item_bundle";
+
     private RepoItem mItem;
-
-    private OnFragmentInteractionListener mListener;
 
     private RecyclerView mRatingsRecyclerView;
     private RatingsAdapter mAdapter;
@@ -49,17 +34,16 @@ public class DetailFragment extends Fragment {
     }
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
+     * Factory method to create a new instance of
+     * the fragment using the provided item.
      *
-     * @param itemBundle The bundle containing the parcelled item.
+     * @param repoItem The parcelled item.
      * @return A new instance of fragment DetailFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static DetailFragment newInstance(Bundle itemBundle) {
+    public static DetailFragment newInstance(RepoItem repoItem) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
-        args.putBundle(ARG_ITEM_BUNDLE, itemBundle);
+        args.putParcelable(ARG_ITEM_PARCEL, repoItem);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,7 +52,7 @@ public class DetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mItem = getArguments().getBundle(ARG_ITEM_BUNDLE).getParcelable(KEY_ITEM_PARCEL);
+            mItem = getArguments().getParcelable(ARG_ITEM_PARCEL);
             Log.d(TAG, "item: " + mItem.toString());
         } else {
             Log.e(TAG, "No arguments found");
@@ -85,9 +69,6 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        TextView tv = view.findViewById(R.id.tv);
-        tv.setText(mItem.getName());
-
         mRatingsRecyclerView = view.findViewById(R.id.ratings_recycler_view);
         mRatingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -96,45 +77,6 @@ public class DetailFragment extends Fragment {
 
         mAdapter.setScore(mItem.getOverallScore());
         mAdapter.notifyDataSetChanged();
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 
     private class RatingHolder extends RecyclerView.ViewHolder {

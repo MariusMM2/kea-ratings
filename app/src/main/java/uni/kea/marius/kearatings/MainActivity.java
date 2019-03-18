@@ -1,6 +1,5 @@
 package uni.kea.marius.kearatings;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,7 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements CourseListFragment.Callback {
+public class MainActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -70,12 +69,6 @@ public class MainActivity extends AppCompatActivity implements CourseListFragmen
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void onItemSelected(Bundle itemBundle) {
-        Intent i = DetailActivity.newIntent(this, itemBundle);
-
-        startActivity(i);
     }
 
     /**

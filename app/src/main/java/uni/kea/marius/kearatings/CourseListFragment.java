@@ -1,12 +1,12 @@
 package uni.kea.marius.kearatings;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +16,7 @@ import android.widget.TextView;
 import uni.kea.marius.kearatings.database.CourseRepo;
 import uni.kea.marius.kearatings.model.Course;
 import uni.kea.marius.kearatings.model.RepoItem;
+import uni.kea.marius.kearatings.utils.ModelBinding;
 
 import java.util.List;
 
@@ -28,11 +29,6 @@ public class CourseListFragment extends Fragment {
 
     private RecyclerView mCourseRecyclerView;
     private CourseAdapter mAdapter;
-    private Callback mCallback;
-
-    public interface Callback {
-        void onItemSelected(Bundle itemBundle);
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -47,17 +43,6 @@ public class CourseListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mAdapter = new CourseAdapter();
         mCourseRecyclerView.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof Callback) {
-            mCallback = (Callback) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     private class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -75,17 +60,16 @@ public class CourseListFragment extends Fragment {
 
         private void bind(Course course) {
             mItem = course;
-            mNameTextView.setText(course.getName());
-            mRatingBar.setRating(course.getRating());
-            mExpandButton.setOnClickListener(this);
+            ModelBinding.bindRepoItem(course, mNameTextView, mRatingBar, mExpandButton, this);
         }
 
         @Override
         public void onClick(View v) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(DetailFragment.KEY_ITEM_PARCEL, mItem);
-            Log.d(TAG, "parcel: " + bundle.toString());
-            mCallback.onItemSelected(bundle);
+            Intent i = DetailActivity.newIntent(getContext(), mItem);
+
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                    itemView.findViewById(R.id.item_preview), "item");
+            startActivity(i, options.toBundle());
         }
     }
 
