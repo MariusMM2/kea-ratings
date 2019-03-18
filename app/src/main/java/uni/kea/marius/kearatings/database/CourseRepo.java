@@ -17,7 +17,12 @@ public class CourseRepo extends AbstractRepo<Course> {
 
     private CourseRepo(Context context) {
         super(context);
-        addAll(Arrays.asList(new Course(),
+
+        Course course = new Course();
+        course.setName("Fooster Barsten Longname");
+
+        addAll(Arrays.asList(course,
+                new Course(),
                 new Course(),
                 new Course(),
                 new Course(),

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import uni.kea.marius.kearatings.database.TeacherRepo;
 import uni.kea.marius.kearatings.model.Teacher;
@@ -32,22 +33,23 @@ public class TeacherListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        mTeacherRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         mAdapter = new TeacherListFragment.TeacherAdapter();
         mTeacherRecyclerView.setAdapter(mAdapter);
     }
 
     private class TeacherHolder extends RecyclerView.ViewHolder {
         private TextView mNameTextView;
+        private RatingBar mRatingBar;
 
         public TeacherHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_course, parent, false));
-            mNameTextView = itemView.findViewById(R.id.course_name);
+            super(inflater.inflate(R.layout.list_item, parent, false));
+            mNameTextView = itemView.findViewById(R.id.item_name);
+            mRatingBar = itemView.findViewById(R.id.item_rating);
         }
 
         private void bind(Teacher teacher) {
             mNameTextView.setText(teacher.getName());
+            mRatingBar.setRating(teacher.getRating());
         }
     }
 

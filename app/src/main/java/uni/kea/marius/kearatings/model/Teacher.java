@@ -1,30 +1,25 @@
 package uni.kea.marius.kearatings.model;
 
-import com.thedeanda.lorem.LoremIpsum;
+import android.os.Parcel;
 
-import java.util.UUID;
-
-public class Teacher implements RepoItem {
-    private UUID mId;
-    private String mName;
-    private float mRating;
+public class Teacher extends RepoItem {
+    private static final String[] RATING_TOPICS = {"Preparation", "Competence", "Overall Performance", "Quality of Examples"};
 
     public Teacher() {
-        mId = UUID.randomUUID();
-        mName = LoremIpsum.getInstance().getName();
-        mRating = Course.sRandom.nextFloat();
+        super();
+    }
+
+    public Teacher(Parcel in) {
+        super(in);
     }
 
     @Override
-    public UUID getId() {
-        return mId;
+    protected String[] getRatingTopics() {
+        return RATING_TOPICS;
     }
 
-    public String getName() {
-        return mName;
-    }
-
-    public float getRating() {
-        return mRating;
+    @Override
+    public Type getType() {
+        return Type.TEACHER;
     }
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-abstract class AbstractRepo<T extends RepoItem> implements Repo<T> {
+abstract class AbstractRepo<T> implements Repo<T> {
     AbstractRepo(Context context) {
         items = new ArrayList<>();
     }

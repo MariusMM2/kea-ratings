@@ -1,5 +1,6 @@
 package uni.kea.marius.kearatings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,9 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import uni.kea.marius.kearatings.database.CourseRepo;
 import uni.kea.marius.kearatings.model.Course;
+import uni.kea.marius.kearatings.model.RepoItem;
 
 import java.util.List;
 
@@ -23,6 +27,11 @@ public class CourseListFragment extends Fragment {
 
     private RecyclerView mCourseRecyclerView;
     private CourseAdapter mAdapter;
+    private Callback mCallback;
+
+    public interface Callback {
+        void onItemSelected(Bundle itemBundle);
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -35,22 +44,46 @@ public class CourseListFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        mCourseRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
         mAdapter = new CourseAdapter();
         mCourseRecyclerView.setAdapter(mAdapter);
     }
 
-    private class CourseHolder extends RecyclerView.ViewHolder {
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof Callback) {
+            mCallback = (Callback) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    private class CourseHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView mNameTextView;
+        private RatingBar mRatingBar;
+        private ImageButton mExpandButton;
+        private RepoItem mItem;
 
         public CourseHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.list_item_course, parent, false));
-            mNameTextView = itemView.findViewById(R.id.course_name);
+            super(inflater.inflate(R.layout.list_item, parent, false));
+            mNameTextView = itemView.findViewById(R.id.item_name);
+            mRatingBar = itemView.findViewById(R.id.item_rating);
+            mExpandButton = itemView.findViewById(R.id.item_expand_button);
         }
 
         private void bind(Course course) {
+            mItem = course;
             mNameTextView.setText(course.getName());
+            mRatingBar.setRating(course.getRating());
+            mExpandButton.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(DetailFragment.KEY_ITEM_PARCEL, mItem);
+            mCallback.onItemSelected(bundle);
         }
     }
 
@@ -65,8 +98,7 @@ public class CourseListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull CourseHolder courseHolder, int i) {
-//            Course course = CourseRepo.getInstance(getActivity()).read(i);
-//            courseHolder.bind(course);
+
         }
 
         @Override
