@@ -25,13 +25,17 @@ public abstract class RepoItem implements Rateable, Parcelable {
 
         int scoreCount = sRandom.nextInt(10);
 
-        for (int i = 0; i < scoreCount; i++) {
-            Score score = new Score(getRatingTopics());
-            for (String topic : getRatingTopics()) {
-                score.put(topic, sRandom.nextInt(10) / 2f);
-            }
+        if (scoreCount == 0) {
+            mScores.add(new Score(getRatingTopics()));
+        } else {
+            for (int i = 0; i < scoreCount; i++) {
+                Score score = new Score(getRatingTopics());
+                for (String topic : getRatingTopics()) {
+                    score.put(topic, sRandom.nextInt(10) / 2f);
+                }
 
-            mScores.add(score);
+                mScores.add(score);
+            }
         }
     }
 
