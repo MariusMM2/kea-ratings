@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +15,44 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import uni.kea.marius.kearatings.database.Repo;
+import uni.kea.marius.kearatings.database.Repos;
 import uni.kea.marius.kearatings.model.RepoItem;
 import uni.kea.marius.kearatings.util.ModelBinding;
 
 import java.util.List;
 
 public class ItemListFragment extends Fragment {
+    private static final String TAG = "ItemListFragment";
+
+    public static final String ARG_ITEM_TYPE = "item_type";
 
     private Repo mRepo;
     private RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
 
+    public static ItemListFragment newInstance(int itemType) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_ITEM_TYPE, itemType);
+        ItemListFragment fragment = new ItemListFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     public ItemListFragment() {
 
     }
 
-    public void setRepo(Repo repo) {
-        mRepo = repo;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            int itemType = getArguments().getInt(ARG_ITEM_TYPE);
+            Log.d(TAG, "itemType: " + itemType);
+            mRepo = Repos.get(itemType, getContext());
+        } else {
+            Log.e(TAG, "No arguments found");
+            throw new IllegalStateException("Fragment arguments cannot be null");
+        }
     }
 
     @Override
@@ -46,6 +68,7 @@ public class ItemListFragment extends Fragment {
         mAdapter = new CourseAdapter();
         mRecyclerView.setAdapter(mAdapter);
     }
+
 
     private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private RepoItem mItem;

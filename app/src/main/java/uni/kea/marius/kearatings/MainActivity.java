@@ -10,8 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import uni.kea.marius.kearatings.database.CourseRepo;
-import uni.kea.marius.kearatings.database.TeacherRepo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,13 +85,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // Return a ItemListFragment and attach the specific repository
 
-            ItemListFragment fragment = new ItemListFragment();
-
-            fragment.setRepo(position == 0 ?
-                    CourseRepo.getInstance(MainActivity.this) :
-                    TeacherRepo.getInstance(MainActivity.this));
-
-            return fragment;
+            return ItemListFragment.newInstance(position);
         }
 
         @Override
