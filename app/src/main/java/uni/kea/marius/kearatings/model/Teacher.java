@@ -3,7 +3,7 @@ package uni.kea.marius.kearatings.model;
 import android.os.Parcel;
 
 public class Teacher extends RepoItem {
-    private static final String[] RATING_TOPICS = {"Preparation", "Competence", "Overall Performance", "Quality of Examples"};
+    private static final String[] RATING_TOPICS = {"Preparation", "Competence", "Overall Performance", "Quality of Examples", "Feedback"};
 
     public Teacher() {
         super();
