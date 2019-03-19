@@ -7,28 +7,28 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-abstract class AbstractRepo<T> implements Repo<T> {
+class AbstractRepo implements Repo {
+    private List<RepoItem> items;
+
     AbstractRepo(Context context) {
         items = new ArrayList<>();
     }
 
-    private List<T> items;
-
-    void addAll(Collection<T> newItems) {
-        items.addAll(newItems);
+    @Override
+    public RepoItem[] readAll() {
+        return items.toArray(new RepoItem[]{});
     }
 
-    public T[] readAll() {
-        //noinspection unchecked,SuspiciousToArrayCall
-        return (T[]) items.toArray(new RepoItem[]{});
-    }
-
-    public T read(int i) {
+    public RepoItem read(int i) {
         return items.get(i);
     }
 
     @Override
     public int size() {
         return items.size();
+    }
+
+    void addAll(Collection<RepoItem> newItems) {
+        items.addAll(newItems);
     }
 }

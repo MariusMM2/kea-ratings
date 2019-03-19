@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import uni.kea.marius.kearatings.database.CourseRepo;
+import uni.kea.marius.kearatings.database.TeacherRepo;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -83,14 +85,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a CourseListFragment (defined as a static inner class below).
+            // Return a ItemListFragment and attach the specific repository
 
-            if (position == 0) {
-                return new CourseListFragment();
-            } else {
-                return new TeacherListFragment();
-            }
+            ItemListFragment fragment = new ItemListFragment();
+
+            fragment.setRepo(position == 0 ?
+                    CourseRepo.getInstance(MainActivity.this) :
+                    TeacherRepo.getInstance(MainActivity.this));
+
+            return fragment;
         }
 
         @Override

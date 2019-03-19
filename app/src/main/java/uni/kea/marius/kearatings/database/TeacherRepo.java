@@ -5,7 +5,7 @@ import uni.kea.marius.kearatings.model.Teacher;
 
 import java.util.Arrays;
 
-public class TeacherRepo extends AbstractRepo<Teacher> {
+public class TeacherRepo extends AbstractRepo {
     private static TeacherRepo instance;
 
     public static TeacherRepo getInstance(Context context) {

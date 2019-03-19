@@ -1,9 +1,11 @@
 package uni.kea.marius.kearatings.database;
 
-public interface Repo<T> {
-    T[] readAll();
+import uni.kea.marius.kearatings.model.RepoItem;
 
-    T read(int i);
+public interface Repo {
+    RepoItem[] readAll();
+
+    RepoItem read(int i);
 
     int size();
 }

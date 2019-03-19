@@ -5,7 +5,7 @@ import uni.kea.marius.kearatings.model.Course;
 
 import java.util.Arrays;
 
-public class CourseRepo extends AbstractRepo<Course> {
+public class CourseRepo extends AbstractRepo {
     private static CourseRepo instance;
 
     public static CourseRepo getInstance(Context context) {
