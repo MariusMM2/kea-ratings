@@ -7,8 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.ImageButton;
 import uni.kea.marius.kearatings.model.RepoItem;
-import uni.kea.marius.kearatings.utils.AnimationUtils;
-import uni.kea.marius.kearatings.utils.ModelBinding;
+import uni.kea.marius.kearatings.util.AnimationUtils;
+import uni.kea.marius.kearatings.util.ModelBinding;
 
 public class DetailActivity extends SingleFragmentActivity {
     private static final String TAG = "DetailActivity";

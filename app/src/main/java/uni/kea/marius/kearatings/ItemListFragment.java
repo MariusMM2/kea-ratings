@@ -15,7 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import uni.kea.marius.kearatings.database.Repo;
 import uni.kea.marius.kearatings.model.RepoItem;
-import uni.kea.marius.kearatings.utils.ModelBinding;
+import uni.kea.marius.kearatings.util.ModelBinding;
 
 import java.util.List;
 

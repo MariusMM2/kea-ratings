@@ -1,4 +1,4 @@
-package uni.kea.marius.kearatings.utils;
+package uni.kea.marius.kearatings.util;
 
 import android.view.View;
 import android.widget.ImageButton;
