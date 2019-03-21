@@ -24,7 +24,11 @@ public class DetailFragment extends Fragment {
     // the fragment initialization parameter
     private static final String ARG_ITEM_PARCEL = "item_bundle";
 
+    private static final String STATE_NEW_RATING = "new_rating";
+
     private RepoItem mItem;
+    private Score mNewRating;
+    private boolean mHasNewRating;
 
     private RecyclerView mRatingsRecyclerView;
     private RatingsAdapter mAdapter;
@@ -51,6 +55,8 @@ public class DetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate()");
+        setRetainInstance(true);
         if (getArguments() != null) {
             mItem = getArguments().getParcelable(ARG_ITEM_PARCEL);
             Log.d(TAG, "item: " + mItem.toString());
@@ -69,14 +75,70 @@ public class DetailFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated()");
+
+        if (savedInstanceState != null) {
+            Log.d(TAG, "Loading state");
+            //Restore the fragment's state here
+            mNewRating = savedInstanceState.getParcelable(STATE_NEW_RATING);
+            if (mNewRating != null) {
+                mHasNewRating = true;
+                prepareNewRatingLayout();
+            } else {
+                Log.d(TAG, "standard rating layout");
+                mHasNewRating = false;
+            }
+        }
+
         mRatingsRecyclerView = view.findViewById(R.id.ratings_recycler_view);
         mRatingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mAdapter = new RatingsAdapter();
         mRatingsRecyclerView.setAdapter(mAdapter);
 
-        mAdapter.setScore(mItem.getOverallScore());
+        mAdapter.setScore(mHasNewRating ? mNewRating : mItem.getOverallScore());
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+//        if (savedInstanceState != null) {
+//            Log.d(TAG, "Loading state");
+//            //Restore the fragment's state here
+//            mNewRating = savedInstanceState.getParcelable(STATE_NEW_RATING);
+//            if (mNewRating != null) {
+//                mHasNewRating = true;
+//                prepareNewRatingLayout();
+//            } else {
+//                Log.d(TAG, "standard rating layout");
+//                mHasNewRating = false;
+//            }
+//        }
+    }
+
+    private void prepareNewRatingLayout() {
+        Log.d(TAG, "Preparing new rating layout");
+        getActivity().findViewById(R.id.new_rating_title).setVisibility(View.VISIBLE);
+        mAdapter.setScore(mNewRating);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the fragment's state here
+        outState.putParcelable(STATE_NEW_RATING, mNewRating);
+        Log.d(TAG, "Saving state");
+    }
+
+    public void newRating() {
+        mNewRating = new Score(mItem);
+        mHasNewRating = true;
+        prepareNewRatingLayout();
+
     }
 
     private class RatingHolder extends RecyclerView.ViewHolder {
@@ -87,8 +149,10 @@ public class DetailFragment extends Fragment {
 
         public RatingHolder(LayoutInflater layoutInflater, ViewGroup parent) {
             super(layoutInflater.inflate(R.layout.list_item_rating_criteria, parent, false));
+            Log.d(TAG, "Holder created");
             mNameView = itemView.findViewById(R.id.criteria_name);
             mRatingBar = itemView.findViewById(R.id.criteria_rating);
+
         }
 
         public void bind(Map.Entry<String, Float> ratingEntry) {
@@ -96,6 +160,7 @@ public class DetailFragment extends Fragment {
 
             mNameView.setText(mRating.getKey());
             mRatingBar.setRating(mRating.getValue());
+            mRatingBar.setIsIndicator(!mHasNewRating);
         }
     }
 

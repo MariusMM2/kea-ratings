@@ -13,6 +13,10 @@ public class Score implements Parcelable {
 
     private Map<String, Float> ratings;
 
+    public Score(RepoItem item) {
+        this(item.getRatingTopics());
+    }
+
     Score(String[] topics) {
         ratings = new LinkedHashMap<>(topics.length);
         for (String topic : topics) {

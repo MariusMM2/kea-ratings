@@ -20,6 +20,7 @@
         <item name="coordinatorLayoutStyle">@style/Widget.Support.CoordinatorLayout</item>
         <item name="cardViewStyle">@style/Widget.MaterialComponents.CardView</item>
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
+        <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
     </style>
 
     <style name="AppTheme.ListPage" parent="AppTheme">

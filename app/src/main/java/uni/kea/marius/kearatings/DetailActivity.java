@@ -5,11 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.view.ViewAnimationUtils;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import uni.kea.marius.kearatings.model.RepoItem;
 import uni.kea.marius.kearatings.util.AnimationUtils;
 import uni.kea.marius.kearatings.util.ModelBinding;
@@ -22,8 +21,10 @@ public class DetailActivity extends SingleFragmentActivity {
     private RepoItem mItem;
     private View mItemView;
     private ImageButton mImageButton;
-    private FrameLayout mFragmentLayout;
-    private ImageView mFragmentBackground;
+    private CardView mFragmentBackground;
+    private DetailFragment mFragment;
+    private boolean mAnimOn = false;
+
 
     @Override
     protected int getLayoutResId() {
@@ -57,8 +58,15 @@ public class DetailActivity extends SingleFragmentActivity {
         mImageButton.setOnClickListener(v -> onBackPressed());
         AnimationUtils.flip(mImageButton, true);
 
-        mFragmentLayout = findViewById(R.id.fragment_container);
         mFragmentBackground = findViewById(R.id.background);
+
+//        mFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        mFragment = (DetailFragment) fragment;
     }
 
     @Override
@@ -68,17 +76,70 @@ public class DetailActivity extends SingleFragmentActivity {
     }
 
     public void addRating(View view) {
-        int x = (int) (view.getLeft() + view.getWidth() / 2f);
-        int y = (int) (view.getTop() + view.getHeight() / 2f);
+        if (!mAnimOn) {
+            mAnimOn = true;
 
-        int startRadius = 0;
-        View rootView = findViewById(R.id.root_layout);
-        int endRadius = (int) (Math.hypot(rootView.getWidth(), rootView.getHeight()));
+            View rootView = findViewById(R.id.root_layout);
 
-        Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentBackground, x, y, startRadius, endRadius);
+            int x = (int) (mFragmentBackground.getWidth() - (rootView.getWidth() - (view.getLeft() + view.getWidth() / 2f)));
+            int y = (int) (mFragmentBackground.getHeight() - (rootView.getHeight() - (view.getTop() + view.getHeight() / 2f)));
 
-        mFragmentBackground.setVisibility(View.VISIBLE);
-        anim.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
-        anim.start();
+            int startRadius = 0;
+            int endRadius = (int) (Math.hypot(rootView.getWidth(), rootView.getHeight()));
+
+            Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentBackground, x, y, startRadius, endRadius);
+
+            mFragmentBackground.setVisibility(View.VISIBLE);
+            anim.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
+            anim.addListener(new Animator.AnimatorListener() {
+                @Override
+                public void onAnimationStart(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mFragment.newRating();
+
+                    Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentBackground, x, y, endRadius, startRadius);
+
+                    anim.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
+                    anim.start();
+                    anim.addListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            mFragmentBackground.setVisibility(View.GONE);
+                            mAnimOn = false;
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onAnimationCancel(Animator animation) {
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator animation) {
+
+                }
+            });
+            anim.start();
+        }
     }
 }
