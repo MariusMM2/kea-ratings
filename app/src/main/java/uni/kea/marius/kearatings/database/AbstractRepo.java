@@ -28,6 +28,11 @@ class AbstractRepo implements Repo {
         return items.size();
     }
 
+    @Override
+    public void update(int index, RepoItem item) {
+        items.set(index, item);
+    }
+
     void addAll(Collection<RepoItem> newItems) {
         items.addAll(newItems);
     }

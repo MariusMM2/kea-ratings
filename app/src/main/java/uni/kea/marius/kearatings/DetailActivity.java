@@ -1,9 +1,11 @@
 package uni.kea.marius.kearatings;
 
 import android.animation.Animator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -18,11 +20,15 @@ public class DetailActivity extends SingleFragmentActivity {
 
     private static final String EXTRA_ITEM_PARCEL = "item_parcel";
 
+    public static final String RESULT_ITEM_PARCEL = "result_item_parcel";
+
     private RepoItem mItem;
     private View mItemView;
     private ImageButton mImageButton;
     private CardView mFragmentCurtain;
     private DetailFragment mFragment;
+    private FloatingActionButton mNewRatingFAB;
+    private FloatingActionButton mSubmitRatingFAB;
     private boolean mAnimOn = false;
 
 
@@ -56,11 +62,19 @@ public class DetailActivity extends SingleFragmentActivity {
 
         mImageButton = findViewById(R.id.item_expand_button);
         mImageButton.setOnClickListener(v -> onBackPressed());
-        AnimationUtils.flip(mImageButton, true);
+        AnimationUtils.rotate(mImageButton, R.anim.expand_to_details);
 
         mFragmentCurtain = findViewById(R.id.curtain);
 
-//        mFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        mNewRatingFAB = findViewById(R.id.new_rating);
+        mNewRatingFAB.setOnClickListener(v -> animateCurtain(v, () -> {
+            if (!mFragment.hasNewRating()) {
+                mFragment.newRating();
+            }
+        }, () -> AnimationUtils.rotate(mImageButton, R.anim.expand_to_new_rating)));
+
+        mSubmitRatingFAB = findViewById(R.id.submit_rating);
+        mSubmitRatingFAB.setOnClickListener(v -> mFragment.submitRating());
     }
 
     @Override
@@ -71,26 +85,49 @@ public class DetailActivity extends SingleFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        AnimationUtils.flip(mImageButton, false);
-        super.onBackPressed();
+        if (mFragment.hasNewRating()) {
+            // return from the new rating section
+            mItem = DetailFragment.getItem(mFragment);
+            ModelBinding.bindRepoItem(mItem, mItemView);
+            animateCurtain(mNewRatingFAB, () -> {
+                mFragment.defaultRating();
+                AnimationUtils.rotate(mImageButton, R.anim.expand_from_new_rating);
+            });
+            AnimationUtils.swapImage(mNewRatingFAB, mSubmitRatingFAB, false);
+        } else {
+            // return to MainActivity
+            AnimationUtils.rotate(mImageButton, R.anim.expand_from_details);
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra(RESULT_ITEM_PARCEL, mItem);
+            setResult(Activity.RESULT_OK, returnIntent);
+            super.onBackPressed();
+        }
     }
 
-    public void addRating(View view) {
+    private void animateCurtain(View origin, Runnable afterHide) {
+        animateCurtain(origin, afterHide, null);
+    }
+
+    private void animateCurtain(View origin, Runnable afterHide, Runnable afterReveal) {
         if (!mAnimOn) {
             mAnimOn = true;
 
             View rootView = findViewById(R.id.root_layout);
 
-            int x = (int) (mFragmentCurtain.getWidth() - (rootView.getWidth() - (view.getLeft() + view.getWidth() / 2f)));
-            int y = (int) (mFragmentCurtain.getHeight() - (rootView.getHeight() - (view.getTop() + view.getHeight() / 2f)));
+            final int duration = getResources().getInteger(android.R.integer.config_mediumAnimTime);
+
+            int x = (int) (mFragmentCurtain.getWidth() - (rootView.getWidth() - (origin.getLeft() + origin.getWidth() / 2f)));
+            int y = (int) (mFragmentCurtain.getHeight() - (rootView.getHeight() - (origin.getTop() + origin.getHeight() / 2f)));
 
             int startRadius = 0;
             int endRadius = (int) (Math.hypot(rootView.getWidth(), rootView.getHeight()));
 
             Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentCurtain, x, y, startRadius, endRadius);
 
+            AnimationUtils.swapImage(mNewRatingFAB, mSubmitRatingFAB, true);
+
             mFragmentCurtain.setVisibility(View.VISIBLE);
-            anim.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
+            anim.setDuration(duration);
             anim.addListener(new Animator.AnimatorListener() {
                 @Override
                 public void onAnimationStart(Animator animation) {
@@ -99,11 +136,13 @@ public class DetailActivity extends SingleFragmentActivity {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mFragment.newRating();
+                    if (afterHide != null) {
+                        afterHide.run();
+                    }
 
                     Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentCurtain, x, y, endRadius, startRadius);
 
-                    anim.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
+                    anim.setDuration(duration);
                     anim.start();
                     anim.addListener(new Animator.AnimatorListener() {
                         @Override
@@ -113,6 +152,10 @@ public class DetailActivity extends SingleFragmentActivity {
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            if (afterReveal != null) {
+                                afterReveal.run();
+                            }
+
                             mFragmentCurtain.setVisibility(View.GONE);
                             mAnimOn = false;
                         }

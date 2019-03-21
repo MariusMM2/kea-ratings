@@ -52,6 +52,10 @@ public class DetailFragment extends Fragment {
         return fragment;
     }
 
+    public static RepoItem getItem(DetailFragment targetFragment) {
+        return targetFragment.getArguments().getParcelable(ARG_ITEM_PARCEL);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,11 +86,13 @@ public class DetailFragment extends Fragment {
             //Restore the fragment's state here
             mNewRating = savedInstanceState.getParcelable(STATE_NEW_RATING);
             if (mNewRating != null) {
+                Log.d(TAG, "new rating layout");
                 mHasNewRating = true;
                 prepareNewRatingLayout();
             } else {
                 Log.d(TAG, "standard rating layout");
                 mHasNewRating = false;
+                prepareDefaultRatingLayout();
             }
         }
 
@@ -118,13 +124,6 @@ public class DetailFragment extends Fragment {
 //        }
     }
 
-    private void prepareNewRatingLayout() {
-        Log.d(TAG, "Preparing new rating layout");
-        getActivity().findViewById(R.id.new_rating_title).setVisibility(View.VISIBLE);
-        mAdapter.setScore(mNewRating);
-        mAdapter.notifyDataSetChanged();
-    }
-
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -140,6 +139,36 @@ public class DetailFragment extends Fragment {
         prepareNewRatingLayout();
 
     }
+
+    public void defaultRating() {
+        mNewRating = null;
+        mHasNewRating = false;
+        prepareDefaultRatingLayout();
+    }
+
+    public void submitRating() {
+        mItem.addScore(mNewRating);
+        getActivity().onBackPressed();
+    }
+
+    private void prepareNewRatingLayout() {
+        Log.d(TAG, "Preparing new rating layout");
+        getActivity().findViewById(R.id.new_rating_title).setVisibility(View.VISIBLE);
+        mAdapter.setScore(mNewRating);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    private void prepareDefaultRatingLayout() {
+        Log.d(TAG, "Preparting default rating layout");
+        getActivity().findViewById(R.id.new_rating_title).setVisibility(View.GONE);
+        mAdapter.setScore(mItem.getOverallScore());
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public boolean hasNewRating() {
+        return mHasNewRating;
+    }
+
 
     private class RatingHolder extends RecyclerView.ViewHolder {
         private Map.Entry<String, Float> mRating;
@@ -161,6 +190,13 @@ public class DetailFragment extends Fragment {
             mNameView.setText(mRating.getKey());
             mRatingBar.setRating(mRating.getValue());
             mRatingBar.setIsIndicator(!mHasNewRating);
+            if (mHasNewRating) {
+                mRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+                    if (fromUser) {
+                        mRating.setValue(rating);
+                    }
+                });
+            }
         }
     }
 

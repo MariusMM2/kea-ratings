@@ -1,5 +1,6 @@
 package uni.kea.marius.kearatings;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,6 +30,7 @@ public class ItemListFragment extends Fragment {
     private Repo mRepo;
     private RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
+    private int mSelectedItem;
 
     public static ItemListFragment newInstance(int itemType) {
         Bundle args = new Bundle();
@@ -69,6 +71,25 @@ public class ItemListFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                RepoItem item = data.getParcelableExtra(DetailActivity.RESULT_ITEM_PARCEL);
+                mRepo.update(mSelectedItem, item);
+                mAdapter.notifyItemChanged(mSelectedItem);
+            } else {
+                if (data != null) {
+                    Log.e(TAG, "DetailActivity returned negative, " + data.toString());
+                } else {
+                    Log.e(TAG, "DetailActivity returned nothing");
+                }
+
+            }
+        }
+    }
 
     private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private RepoItem mItem;
@@ -90,11 +111,13 @@ public class ItemListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
+            mSelectedItem = this.getAdapterPosition();
+
             Intent i = DetailActivity.newIntent(getContext(), mItem);
 
             ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
                     itemView.findViewById(R.id.item_preview), "item");
-            startActivity(i, options.toBundle());
+            startActivityForResult(i, 1, options.toBundle());
         }
     }
 

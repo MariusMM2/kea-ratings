@@ -8,4 +8,6 @@ public interface Repo {
     RepoItem read(int i);
 
     int size();
+
+    void update(int index, RepoItem item);
 }

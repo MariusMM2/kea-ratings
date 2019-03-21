@@ -21,13 +21,10 @@ public abstract class RepoItem implements Rateable, Parcelable {
         mId = UUID.randomUUID();
         mName = LoremIpsum.getInstance().getName();
         mScores = new ArrayList<>();
-        //mRating = sRandom.nextInt(10) / 2f;
 
         int scoreCount = sRandom.nextInt(10);
 
-        if (scoreCount == 0) {
-            mScores.add(new Score(getRatingTopics()));
-        } else {
+        if (scoreCount >= 3) {
             for (int i = 0; i < scoreCount; i++) {
                 Score score = new Score(getRatingTopics());
                 for (String topic : getRatingTopics()) {
@@ -80,7 +77,11 @@ public abstract class RepoItem implements Rateable, Parcelable {
 
     @Override
     public Score getOverallScore() {
-        return Score.average(mScores.toArray(new Score[]{}));
+        if (mScores.size() != 0) {
+            return Score.average(mScores.toArray(new Score[]{}));
+        } else {
+            return new Score(getRatingTopics());
+        }
     }
 
     public void setName(String name) {
