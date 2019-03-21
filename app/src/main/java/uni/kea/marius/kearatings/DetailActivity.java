@@ -21,7 +21,7 @@ public class DetailActivity extends SingleFragmentActivity {
     private RepoItem mItem;
     private View mItemView;
     private ImageButton mImageButton;
-    private CardView mFragmentBackground;
+    private CardView mFragmentCurtain;
     private DetailFragment mFragment;
     private boolean mAnimOn = false;
 
@@ -58,7 +58,7 @@ public class DetailActivity extends SingleFragmentActivity {
         mImageButton.setOnClickListener(v -> onBackPressed());
         AnimationUtils.flip(mImageButton, true);
 
-        mFragmentBackground = findViewById(R.id.background);
+        mFragmentCurtain = findViewById(R.id.curtain);
 
 //        mFragment = (DetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
     }
@@ -81,15 +81,15 @@ public class DetailActivity extends SingleFragmentActivity {
 
             View rootView = findViewById(R.id.root_layout);
 
-            int x = (int) (mFragmentBackground.getWidth() - (rootView.getWidth() - (view.getLeft() + view.getWidth() / 2f)));
-            int y = (int) (mFragmentBackground.getHeight() - (rootView.getHeight() - (view.getTop() + view.getHeight() / 2f)));
+            int x = (int) (mFragmentCurtain.getWidth() - (rootView.getWidth() - (view.getLeft() + view.getWidth() / 2f)));
+            int y = (int) (mFragmentCurtain.getHeight() - (rootView.getHeight() - (view.getTop() + view.getHeight() / 2f)));
 
             int startRadius = 0;
             int endRadius = (int) (Math.hypot(rootView.getWidth(), rootView.getHeight()));
 
-            Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentBackground, x, y, startRadius, endRadius);
+            Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentCurtain, x, y, startRadius, endRadius);
 
-            mFragmentBackground.setVisibility(View.VISIBLE);
+            mFragmentCurtain.setVisibility(View.VISIBLE);
             anim.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
             anim.addListener(new Animator.AnimatorListener() {
                 @Override
@@ -101,7 +101,7 @@ public class DetailActivity extends SingleFragmentActivity {
                 public void onAnimationEnd(Animator animation) {
                     mFragment.newRating();
 
-                    Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentBackground, x, y, endRadius, startRadius);
+                    Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentCurtain, x, y, endRadius, startRadius);
 
                     anim.setDuration(getResources().getInteger(android.R.integer.config_longAnimTime));
                     anim.start();
@@ -113,7 +113,7 @@ public class DetailActivity extends SingleFragmentActivity {
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
-                            mFragmentBackground.setVisibility(View.GONE);
+                            mFragmentCurtain.setVisibility(View.GONE);
                             mAnimOn = false;
                         }
 
