@@ -1,21 +1,21 @@
 package uni.kea.marius.kearatings.model;
 
 import android.os.Parcel;
+import uni.kea.marius.kearatings.database.CourseRepo;
 
 public class Course extends RepoItem {
-    private static final String[] RATING_TOPICS = {"Practicality", "Job Opportunities", "Relevance", "Organisation"};
 
     public Course() {
         super();
     }
 
-    public Course(Parcel in) {
+    Course(Parcel in) {
         super(in);
     }
 
     @Override
     protected String[] getRatingTopics() {
-        return RATING_TOPICS;
+        return CourseRepo.sRatingTopics;
     }
 
     @Override

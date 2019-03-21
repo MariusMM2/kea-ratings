@@ -8,32 +8,32 @@ import java.util.Collection;
 import java.util.List;
 
 class AbstractRepo implements Repo {
-    private List<RepoItem> items;
+    private List<RepoItem> mItems;
 
     AbstractRepo(Context context) {
-        items = new ArrayList<>();
+        mItems = new ArrayList<>();
     }
 
     @Override
     public RepoItem[] readAll() {
-        return items.toArray(new RepoItem[]{});
+        return mItems.toArray(new RepoItem[]{});
     }
 
     public RepoItem read(int i) {
-        return items.get(i);
+        return mItems.get(i);
     }
 
     @Override
     public int size() {
-        return items.size();
+        return mItems.size();
     }
 
     @Override
     public void update(int index, RepoItem item) {
-        items.set(index, item);
+        mItems.set(index, item);
     }
 
     void addAll(Collection<RepoItem> newItems) {
-        items.addAll(newItems);
+        mItems.addAll(newItems);
     }
 }

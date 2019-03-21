@@ -11,15 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="Enter Your Rating"
+        android:text="@string/new_rating_prompt"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="26sp"
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/ratings_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <include layout="@layout/fragment_list" />
 
 </LinearLayout>

@@ -7,6 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 public class Repos {
+    private Repos() {
+    }
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef(value = {COURSE_REPO, TEACHER_REPO})

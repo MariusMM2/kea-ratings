@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ImageButton;
@@ -29,7 +30,7 @@ public class DetailActivity extends SingleFragmentActivity {
     private DetailFragment mFragment;
     private FloatingActionButton mNewRatingFAB;
     private FloatingActionButton mSubmitRatingFAB;
-    private boolean mAnimOn = false;
+    private boolean mCurtainAnimActive = false;
 
 
     @Override
@@ -71,10 +72,17 @@ public class DetailActivity extends SingleFragmentActivity {
             if (!mFragment.hasNewRating()) {
                 mFragment.newRating();
             }
-        }, () -> AnimationUtils.rotate(mImageButton, R.anim.expand_to_new_rating)));
+        }, () -> {
+            AnimationUtils.rotate(mImageButton, R.anim.expand_to_new_rating);
+            AnimationUtils.swapButtons(mNewRatingFAB, mSubmitRatingFAB, true);
+        }));
 
         mSubmitRatingFAB = findViewById(R.id.submit_rating);
-        mSubmitRatingFAB.setOnClickListener(v -> mFragment.submitRating());
+        mSubmitRatingFAB.setOnClickListener(v -> {
+            if (!mCurtainAnimActive) {
+                mFragment.submitRating();
+            }
+        });
     }
 
     @Override
@@ -85,22 +93,24 @@ public class DetailActivity extends SingleFragmentActivity {
 
     @Override
     public void onBackPressed() {
-        if (mFragment.hasNewRating()) {
-            // return from the new rating section
-            mItem = DetailFragment.getItem(mFragment);
-            ModelBinding.bindRepoItem(mItem, mItemView);
-            animateCurtain(mNewRatingFAB, () -> {
-                mFragment.defaultRating();
-                AnimationUtils.rotate(mImageButton, R.anim.expand_from_new_rating);
-            });
-            AnimationUtils.swapImage(mNewRatingFAB, mSubmitRatingFAB, false);
-        } else {
-            // return to MainActivity
-            AnimationUtils.rotate(mImageButton, R.anim.expand_from_details);
-            Intent returnIntent = new Intent();
-            returnIntent.putExtra(RESULT_ITEM_PARCEL, mItem);
-            setResult(Activity.RESULT_OK, returnIntent);
-            super.onBackPressed();
+        if (!mCurtainAnimActive) {
+            if (mFragment.hasNewRating()) {
+                // return from the new rating section
+                mItem = DetailFragment.getItem(mFragment);
+                ModelBinding.bindRepoItem(mItem, mItemView);
+                animateCurtain(mNewRatingFAB, () -> {
+                    mFragment.defaultRating();
+                    AnimationUtils.rotate(mImageButton, R.anim.expand_from_new_rating);
+                });
+                AnimationUtils.swapButtons(mNewRatingFAB, mSubmitRatingFAB, false);
+            } else {
+                // return to MainActivity
+                AnimationUtils.rotate(mImageButton, R.anim.expand_from_details);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra(RESULT_ITEM_PARCEL, mItem);
+                setResult(Activity.RESULT_OK, returnIntent);
+                super.onBackPressed();
+            }
         }
     }
 
@@ -109,8 +119,9 @@ public class DetailActivity extends SingleFragmentActivity {
     }
 
     private void animateCurtain(View origin, Runnable afterHide, Runnable afterReveal) {
-        if (!mAnimOn) {
-            mAnimOn = true;
+        if (!mCurtainAnimActive) {
+            mCurtainAnimActive = true;
+            Log.d(TAG, "Curtain animation stage 1");
 
             View rootView = findViewById(R.id.root_layout);
 
@@ -124,8 +135,6 @@ public class DetailActivity extends SingleFragmentActivity {
 
             Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentCurtain, x, y, startRadius, endRadius);
 
-            AnimationUtils.swapImage(mNewRatingFAB, mSubmitRatingFAB, true);
-
             mFragmentCurtain.setVisibility(View.VISIBLE);
             anim.setDuration(duration);
             anim.addListener(new Animator.AnimatorListener() {
@@ -136,14 +145,15 @@ public class DetailActivity extends SingleFragmentActivity {
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                    Log.d(TAG, "Curtain animation stage 2");
                     if (afterHide != null) {
+                        Log.d(TAG, "Curtain animation stage 2 action");
                         afterHide.run();
                     }
 
                     Animator anim = ViewAnimationUtils.createCircularReveal(mFragmentCurtain, x, y, endRadius, startRadius);
 
                     anim.setDuration(duration);
-                    anim.start();
                     anim.addListener(new Animator.AnimatorListener() {
                         @Override
                         public void onAnimationStart(Animator animation) {
@@ -152,12 +162,14 @@ public class DetailActivity extends SingleFragmentActivity {
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
+                            Log.d(TAG, "Curtain animation stage 3");
                             if (afterReveal != null) {
+                                Log.d(TAG, "Curtain animation stage 3 action");
                                 afterReveal.run();
                             }
 
                             mFragmentCurtain.setVisibility(View.GONE);
-                            mAnimOn = false;
+                            mCurtainAnimActive = false;
                         }
 
                         @Override
@@ -170,6 +182,7 @@ public class DetailActivity extends SingleFragmentActivity {
 
                         }
                     });
+                    anim.start();
                 }
 
                 @Override

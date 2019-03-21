@@ -2,44 +2,29 @@ package uni.kea.marius.kearatings.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class Score implements Parcelable {
-    static final float MAX = 5f;
-    static final float STEP = .5f;
+    public static final float MAX = 5f;
+    public static final float MIN = 0.5f;
+    public static final float STEP = .5f;
+    private static final float DEFAULT = -1;
 
     private Map<String, Float> ratings;
-
-    public Score(RepoItem item) {
-        this(item.getRatingTopics());
-    }
 
     Score(String[] topics) {
         ratings = new LinkedHashMap<>(topics.length);
         for (String topic : topics) {
-            ratings.put(topic, 0f);
+            ratings.put(topic, DEFAULT);
         }
     }
 
     private Score() {
         ratings = new LinkedHashMap<>();
-    }
-
-    public void put(String key, float value) {
-        float newValue = Math.max(0, Math.min(MAX, value));
-
-        float newValueBoundToStep = (int) ((newValue + (STEP / 2f)) / STEP) * STEP;
-
-        ratings.put(key, newValueBoundToStep);
-//        ratings.put(key, Float.parseFloat(String.format("%.2f", newValueBoundToStep)));
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    public float get(String key) {
-        return ratings.get(key);
     }
 
     public Map.Entry<String, Float> get(int position) {
@@ -48,7 +33,7 @@ public class Score implements Parcelable {
         return mapSet.toArray(new Map.Entry[]{})[position];
     }
 
-    public float getAverageRating() {
+    float getAverageRating() {
         float total = 0f;
         String[] topics = ratings.keySet().toArray(new String[]{});
         for (String topic : topics) {
@@ -62,7 +47,7 @@ public class Score implements Parcelable {
         return ratings.size();
     }
 
-    public static Score average(Score... scores) {
+    static Score average(Score... scores) {
         Score result = new Score();
 
         int scoreCount = scores.length;
@@ -75,7 +60,7 @@ public class Score implements Parcelable {
         for (String topic : topics) {
             float rating = 0f;
             for (Score score : scores) {
-                rating += score.get(topic);
+                rating += score.ratings.get(topic);
             }
 
             //call put() of Map to bypass step bounding
@@ -85,6 +70,11 @@ public class Score implements Parcelable {
         return result;
     }
 
+    public boolean isReady() {
+        return !ratings.values().contains(DEFAULT);
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "Score{" +
@@ -92,7 +82,7 @@ public class Score implements Parcelable {
                 '}';
     }
 
-    protected Score(Parcel in) {
+    private Score(Parcel in) {
         this();
         int size = in.readInt();
         for (int i = 0; i < size; i++) {

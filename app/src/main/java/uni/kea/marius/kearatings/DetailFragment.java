@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import uni.kea.marius.kearatings.model.RepoItem;
 import uni.kea.marius.kearatings.model.Score;
 
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class DetailFragment extends Fragment {
     private static final String TAG = "DetailFragment";
 
@@ -44,7 +45,7 @@ public class DetailFragment extends Fragment {
      * @param repoItem The parcelled item.
      * @return A new instance of fragment DetailFragment.
      */
-    public static DetailFragment newInstance(RepoItem repoItem) {
+    static DetailFragment newInstance(RepoItem repoItem) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_ITEM_PARCEL, repoItem);
@@ -52,7 +53,7 @@ public class DetailFragment extends Fragment {
         return fragment;
     }
 
-    public static RepoItem getItem(DetailFragment targetFragment) {
+    static RepoItem getItem(DetailFragment targetFragment) {
         return targetFragment.getArguments().getParcelable(ARG_ITEM_PARCEL);
     }
 
@@ -96,8 +97,7 @@ public class DetailFragment extends Fragment {
             }
         }
 
-        mRatingsRecyclerView = view.findViewById(R.id.ratings_recycler_view);
-        mRatingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRatingsRecyclerView = view.findViewById(R.id.recycler_view);
 
         mAdapter = new RatingsAdapter();
         mRatingsRecyclerView.setAdapter(mAdapter);
@@ -133,22 +133,31 @@ public class DetailFragment extends Fragment {
         Log.d(TAG, "Saving state");
     }
 
-    public void newRating() {
-        mNewRating = new Score(mItem);
+    void newRating() {
+        mNewRating = mItem.newScoreTemplate();
         mHasNewRating = true;
         prepareNewRatingLayout();
 
     }
 
-    public void defaultRating() {
+    void defaultRating() {
         mNewRating = null;
         mHasNewRating = false;
         prepareDefaultRatingLayout();
     }
 
-    public void submitRating() {
-        mItem.addScore(mNewRating);
-        getActivity().onBackPressed();
+    void submitRating() {
+        if (mNewRating.isReady()) {
+            mItem.addScore(mNewRating);
+            getActivity().onBackPressed();
+            Toast.makeText(getContext(), "Rating saved.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), "Please rate all criterias.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    boolean hasNewRating() {
+        return mHasNewRating;
     }
 
     private void prepareNewRatingLayout() {
@@ -163,10 +172,6 @@ public class DetailFragment extends Fragment {
         getActivity().findViewById(R.id.new_rating_title).setVisibility(View.GONE);
         mAdapter.setScore(mItem.getOverallScore());
         mAdapter.notifyDataSetChanged();
-    }
-
-    public boolean hasNewRating() {
-        return mHasNewRating;
     }
 
 
@@ -193,7 +198,10 @@ public class DetailFragment extends Fragment {
             if (mHasNewRating) {
                 mRatingBar.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
                     if (fromUser) {
-                        mRating.setValue(rating);
+                        float boundRating = Math.max(rating, Score.MIN);
+                        Log.d(TAG, "PRE_OREO val:" + boundRating);
+                        mRating.setValue(boundRating);
+                        ratingBar.setRating(boundRating);
                     }
                 });
             }

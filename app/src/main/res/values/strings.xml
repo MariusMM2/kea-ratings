@@ -3,5 +3,21 @@
     <string name="tab_text_courses">Courses</string>
     <string name="tab_text_teachers">Teachers</string>
     <string name="action_settings">Settings</string>
+    <string name="new_rating_prompt">Enter Your Rating</string>
+
+    <string-array name="course_rating_topics">
+        <item>Practicality</item>
+        <item>Job Opportunities</item>
+        <item>Relevance</item>
+        <item>Organisation</item>
+    </string-array>
+
+    <string-array name="teacher_rating_topics">
+        <item>Preparation</item>
+        <item>Competence</item>
+        <item>Overall Performance</item>
+        <item>Example Quality</item>
+        <item>Feedback</item>
+    </string-array>
 
 </resources>

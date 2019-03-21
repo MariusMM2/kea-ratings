@@ -2,15 +2,14 @@ package uni.kea.marius.kearatings.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import com.thedeanda.lorem.LoremIpsum;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 
-public abstract class RepoItem implements Rateable, Parcelable {
-    private static final Random sRandom = new Random();
+public abstract class RepoItem implements Parcelable {
     private Type mType;
     private UUID mId;
     private String mName;
@@ -21,36 +20,10 @@ public abstract class RepoItem implements Rateable, Parcelable {
         mId = UUID.randomUUID();
         mName = LoremIpsum.getInstance().getName();
         mScores = new ArrayList<>();
-
-        int scoreCount = sRandom.nextInt(10);
-
-        if (scoreCount >= 3) {
-            for (int i = 0; i < scoreCount; i++) {
-                Score score = new Score(getRatingTopics());
-                for (String topic : getRatingTopics()) {
-                    score.put(topic, sRandom.nextInt(10) / 2f);
-                }
-
-                mScores.add(score);
-            }
-        }
-    }
-
-    protected RepoItem(Parcel in) {
-        mType = getType();
-        mId = (UUID) in.readValue(UUID.class.getClassLoader());
-        mName = in.readString();
-        if (in.readByte() == 0x01) {
-            mScores = new ArrayList<>();
-            in.readList(mScores, Score.class.getClassLoader());
-        } else {
-            mScores = null;
-        }
     }
 
     protected abstract String[] getRatingTopics();
 
-    @Override
     public Score newScoreTemplate() {
         return new Score(getRatingTopics());
     }
@@ -65,22 +38,19 @@ public abstract class RepoItem implements Rateable, Parcelable {
         return mName;
     }
 
-    @Override
     public void addScore(Score score) {
         mScores.add(score);
     }
 
-    @Override
     public float getRating() {
         return getOverallScore().getAverageRating();
     }
 
-    @Override
     public Score getOverallScore() {
         if (mScores.size() != 0) {
             return Score.average(mScores.toArray(new Score[]{}));
         } else {
-            return new Score(getRatingTopics());
+            return newScoreTemplate();
         }
     }
 
@@ -93,6 +63,7 @@ public abstract class RepoItem implements Rateable, Parcelable {
         TEACHER
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "RepoItem{" +
@@ -101,6 +72,18 @@ public abstract class RepoItem implements Rateable, Parcelable {
                 ", mName='" + mName + '\'' +
                 ", mScores=" + mScores.toString() +
                 '}';
+    }
+
+    RepoItem(Parcel in) {
+        mType = getType();
+        mId = (UUID) in.readValue(UUID.class.getClassLoader());
+        mName = in.readString();
+        if (in.readByte() == 0x01) {
+            mScores = new ArrayList<>();
+            in.readList(mScores, Score.class.getClassLoader());
+        } else {
+            mScores = null;
+        }
     }
 
     @Override

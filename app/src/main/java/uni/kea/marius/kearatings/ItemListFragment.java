@@ -22,17 +22,18 @@ import uni.kea.marius.kearatings.util.ModelBinding;
 
 import java.util.List;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ItemListFragment extends Fragment {
     private static final String TAG = "ItemListFragment";
 
-    public static final String ARG_ITEM_TYPE = "item_type";
+    private static final String ARG_ITEM_TYPE = "item_type";
 
     private Repo mRepo;
     private RecyclerView mRecyclerView;
     private CourseAdapter mAdapter;
     private int mSelectedItem;
 
-    public static ItemListFragment newInstance(int itemType) {
+    static ItemListFragment newInstance(int itemType) {
         Bundle args = new Bundle();
         args.putInt(ARG_ITEM_TYPE, itemType);
         ItemListFragment fragment = new ItemListFragment();
@@ -97,7 +98,7 @@ public class ItemListFragment extends Fragment {
         private RatingBar mRatingBar;
         private ImageButton mExpandButton;
 
-        public ItemHolder(LayoutInflater inflater, ViewGroup parent) {
+        ItemHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_preview, parent, false));
             mNameTextView = itemView.findViewById(R.id.item_name);
             mRatingBar = itemView.findViewById(R.id.item_rating);
@@ -111,7 +112,7 @@ public class ItemListFragment extends Fragment {
 
         @Override
         public void onClick(View v) {
-            mSelectedItem = this.getAdapterPosition();
+            mSelectedItem = getAdapterPosition();
 
             Intent i = DetailActivity.newIntent(getContext(), mItem);
 

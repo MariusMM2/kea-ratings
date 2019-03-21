@@ -20,7 +20,7 @@ public class AnimationUtils {
         imageButton.startAnimation(rotateAnim);
     }
 
-    public static void swapImage(ImageView view1, ImageView view2, boolean stage) {
+    public static void swapButtons(ImageView view1, ImageView view2, boolean stage) {
         int duration = view1.getResources().getInteger(android.R.integer.config_mediumAnimTime);
 
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(view1, View.ALPHA, stage ? 0f : 1f);
@@ -52,12 +52,8 @@ public class AnimationUtils {
         rotate2.setInterpolator(new AccelerateDecelerateInterpolator());
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(rotate1)
-                .with(fadeOut)
-                .with(lower)
-                .with(rotate2)
-                .with(fadeIn)
-                .with(elevate)
+        animatorSet.play(rotate1).with(fadeOut).with(lower)
+                .with(rotate2).with(fadeIn).with(elevate)
         ;
         animatorSet.start();
     }

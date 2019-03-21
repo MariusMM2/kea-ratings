@@ -1,22 +1,26 @@
 package uni.kea.marius.kearatings.database;
 
 import android.content.Context;
+import uni.kea.marius.kearatings.R;
 import uni.kea.marius.kearatings.model.Teacher;
 
 import java.util.Arrays;
 
 public class TeacherRepo extends AbstractRepo {
-    private static TeacherRepo instance;
+    public static String[] sRatingTopics;
+    private static TeacherRepo sInstance;
 
-    public static TeacherRepo getInstance(Context context) {
-        if (instance == null) {
-            instance = new TeacherRepo(context);
+    static TeacherRepo getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new TeacherRepo(context);
         }
-        return instance;
+        return sInstance;
     }
 
     private TeacherRepo(Context context) {
         super(context);
+        sRatingTopics = context.getResources().getStringArray(R.array.teacher_rating_topics);
+
         addAll(Arrays.asList(new Teacher(),
                 new Teacher(),
                 new Teacher(),
