@@ -6,8 +6,8 @@
     <string name="new_rating_prompt">Enter Your Rating</string>
 
     <plurals name="review_count">
-        <item quantity="one"> %d Review</item>
-        <item quantity="other"> %d Reviews</item>
+        <item quantity="one">%d Review</item>
+        <item quantity="other">%d Reviews</item>
     </plurals>
 
     <string-array name="course_rating_topics">
