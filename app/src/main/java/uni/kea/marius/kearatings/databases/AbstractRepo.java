@@ -1,7 +1,7 @@
-package uni.kea.marius.kearatings.database;
+package uni.kea.marius.kearatings.databases;
 
 import android.content.Context;
-import uni.kea.marius.kearatings.model.RepoItem;
+import uni.kea.marius.kearatings.models.RepoItem;
 
 import java.util.ArrayList;
 import java.util.Collection;

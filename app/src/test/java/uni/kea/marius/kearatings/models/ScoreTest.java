@@ -1,4 +1,4 @@
-package uni.kea.marius.kearatings.model;
+package uni.kea.marius.kearatings.models;
 
 public class ScoreTest {
     private final int N_TOPICS = 5;

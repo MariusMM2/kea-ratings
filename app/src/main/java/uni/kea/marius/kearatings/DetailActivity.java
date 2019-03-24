@@ -12,9 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ImageButton;
-import uni.kea.marius.kearatings.model.RateableItem;
-import uni.kea.marius.kearatings.util.AnimationUtils;
-import uni.kea.marius.kearatings.util.ModelBinding;
+import uni.kea.marius.kearatings.models.RateableItem;
+import uni.kea.marius.kearatings.utils.AnimationUtils;
+import uni.kea.marius.kearatings.utils.ModelBinding;
 
 public class DetailActivity extends SingleFragmentActivity {
     private static final String TAG = "DetailActivity";

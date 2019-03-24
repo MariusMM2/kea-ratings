@@ -1,7 +1,7 @@
-package uni.kea.marius.kearatings.model;
+package uni.kea.marius.kearatings.models;
 
 import android.os.Parcel;
-import uni.kea.marius.kearatings.database.TeacherRepo;
+import uni.kea.marius.kearatings.databases.TeacherRepo;
 
 public class Teacher extends RateableItem {
 

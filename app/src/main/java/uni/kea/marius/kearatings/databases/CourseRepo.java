@@ -1,8 +1,8 @@
-package uni.kea.marius.kearatings.database;
+package uni.kea.marius.kearatings.databases;
 
 import android.content.Context;
 import uni.kea.marius.kearatings.R;
-import uni.kea.marius.kearatings.model.Course;
+import uni.kea.marius.kearatings.models.Course;
 
 import java.util.Arrays;
 

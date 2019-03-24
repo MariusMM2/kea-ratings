@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import uni.kea.marius.kearatings.model.RateableItem;
-import uni.kea.marius.kearatings.model.Score;
-import uni.kea.marius.kearatings.model.User;
+import uni.kea.marius.kearatings.models.RateableItem;
+import uni.kea.marius.kearatings.models.Score;
+import uni.kea.marius.kearatings.models.User;
 
 import java.util.List;
 import java.util.Map;

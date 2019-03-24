@@ -1,4 +1,4 @@
-package uni.kea.marius.kearatings.model;
+package uni.kea.marius.kearatings.models;
 
 import org.junit.Test;
 

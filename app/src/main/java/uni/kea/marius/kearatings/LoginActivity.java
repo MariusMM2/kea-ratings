@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageView;
-import uni.kea.marius.kearatings.util.AnimationUtils;
+import uni.kea.marius.kearatings.utils.AnimationUtils;
 
 /**
  * A login screen that offers login via email/password.

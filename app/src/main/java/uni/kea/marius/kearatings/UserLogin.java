@@ -2,9 +2,9 @@ package uni.kea.marius.kearatings;
 
 import android.content.Context;
 import android.util.Log;
-import uni.kea.marius.kearatings.database.Repos;
-import uni.kea.marius.kearatings.model.RepoItem;
-import uni.kea.marius.kearatings.model.User;
+import uni.kea.marius.kearatings.databases.Repos;
+import uni.kea.marius.kearatings.models.RepoItem;
+import uni.kea.marius.kearatings.models.User;
 
 import java.util.Arrays;
 

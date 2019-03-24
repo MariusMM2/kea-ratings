@@ -1,6 +1,6 @@
-package uni.kea.marius.kearatings.database;
+package uni.kea.marius.kearatings.databases;
 
-import uni.kea.marius.kearatings.model.RepoItem;
+import uni.kea.marius.kearatings.models.RepoItem;
 
 public interface Repo {
     RepoItem[] readAll();

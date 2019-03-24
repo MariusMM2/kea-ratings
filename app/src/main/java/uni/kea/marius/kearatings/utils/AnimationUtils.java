@@ -1,4 +1,4 @@
-package uni.kea.marius.kearatings.util;
+package uni.kea.marius.kearatings.utils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

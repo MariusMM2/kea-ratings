@@ -1,11 +1,11 @@
-package uni.kea.marius.kearatings.util;
+package uni.kea.marius.kearatings.utils;
 
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import uni.kea.marius.kearatings.R;
-import uni.kea.marius.kearatings.model.RateableItem;
+import uni.kea.marius.kearatings.models.RateableItem;
 
 public class ModelBinding {
     public static void bindRepoItem(RateableItem rateableItem, View container) {

@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import uni.kea.marius.kearatings.database.Repo;
-import uni.kea.marius.kearatings.database.Repos;
-import uni.kea.marius.kearatings.model.RateableItem;
-import uni.kea.marius.kearatings.util.ModelBinding;
+import uni.kea.marius.kearatings.databases.Repo;
+import uni.kea.marius.kearatings.databases.Repos;
+import uni.kea.marius.kearatings.models.RateableItem;
+import uni.kea.marius.kearatings.utils.ModelBinding;
 
 import java.util.List;
 

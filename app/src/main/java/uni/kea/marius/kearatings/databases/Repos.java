@@ -1,4 +1,4 @@
-package uni.kea.marius.kearatings.database;
+package uni.kea.marius.kearatings.databases;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
