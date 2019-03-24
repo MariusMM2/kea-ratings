@@ -19,13 +19,16 @@ class UserRepo extends AbstractRepo {
     private UserRepo(Context context) {
         super(context);
         String emailStructure = context.getString(R.string.email_structure);
+        final String[] users = context.getResources().getStringArray(R.array.users);
+        final String[] ids = context.getResources().getStringArray(R.array.user_ids);
+        String defaultPassword = context.getString(R.string.default_password);
 
         addAll(Arrays.asList(
-                new User(emailStructure, "mari12df@stud.kea.dk", "12345"),
-                new User(emailStructure, "mari13df@stud.kea.dk", "12345"),
-                new User(emailStructure, "mari14df@stud.kea.dk", "12345"),
-                new User(emailStructure, "mari15df@stud.kea.dk", "12345"),
-                new User(emailStructure, "mari16df@stud.kea.dk", "12345")));
+                new User(ids[0], emailStructure, users[0], defaultPassword),
+                new User(ids[1], emailStructure, users[1], defaultPassword),
+                new User(ids[2], emailStructure, users[2], defaultPassword),
+                new User(ids[3], emailStructure, users[3], defaultPassword),
+                new User(ids[4], emailStructure, users[4], defaultPassword)));
     }
 
 

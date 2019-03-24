@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.ImageView;
+import uni.kea.marius.kearatings.databases.Repos;
 import uni.kea.marius.kearatings.utils.AnimationUtils;
 
 /**
@@ -160,10 +161,15 @@ public class LoginActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             try {
                 // Simulate network access.
-                int duration = 1000;
+                int duration = 2000;
                 long before = System.currentTimeMillis();
 
                 boolean result = UserLogin.login(LoginActivity.this, mEmail, mPassword);
+
+                // initialise repositories
+                Repos.get(Repos.COURSE_REPO, LoginActivity.this);
+                Repos.get(Repos.TEACHER_REPO, LoginActivity.this);
+                Repos.get(Repos.USER_REPO, LoginActivity.this);
 
                 long after = System.currentTimeMillis();
 

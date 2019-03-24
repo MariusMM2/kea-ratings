@@ -12,10 +12,6 @@ public class UserLogin {
     private static final String TAG = "UserLogin";
     private static User sLoggedInUser;
 
-    public static boolean isLoggedIn() {
-        return sLoggedInUser != null;
-    }
-
     public static boolean login(Context context, String email, String password) {
         RepoItem[] usersArray = Repos.get(Repos.USER_REPO, context).readAll();
         User[] users = Arrays.copyOf(usersArray, usersArray.length, User[].class);

@@ -3,7 +3,6 @@ package uni.kea.marius.kearatings.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import com.thedeanda.lorem.LoremIpsum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +14,10 @@ public abstract class RateableItem implements RepoItem, Parcelable {
     private String mName;
     private List<Score> mScores;
 
-    RateableItem() {
+    RateableItem(String uuidString, String name) {
         mType = getType();
-        mId = UUID.randomUUID();
-        mName = LoremIpsum.getInstance().getName();
+        mId = UUID.fromString(uuidString);
+        mName = name;
         mScores = new ArrayList<>();
     }
 

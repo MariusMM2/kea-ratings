@@ -12,7 +12,11 @@ public class User implements RepoItem {
     }
 
     public User(String emailStructure, String email, String password) {
-        mId = UUID.randomUUID();
+        this(UUID.randomUUID().toString(), emailStructure, email, password);
+    }
+
+    public User(String uuidString, String emailStructure, String email, String password) {
+        mId = UUID.fromString(uuidString);
         email = email.toLowerCase();
         mUserName = email.substring(0, email.indexOf(emailStructure));
         mEmail = email;

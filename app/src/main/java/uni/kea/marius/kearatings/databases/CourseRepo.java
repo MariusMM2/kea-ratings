@@ -20,14 +20,13 @@ public class CourseRepo extends AbstractRepo {
     private CourseRepo(Context context) {
         super(context);
         sRatingTopics = context.getResources().getStringArray(R.array.course_rating_topics);
+        final String[] courses = context.getResources().getStringArray(R.array.courses);
+        final String[] ids = context.getResources().getStringArray(R.array.course_ids);
 
-        Course course = new Course();
-        course.setName("Fooster Barsten Langtnavn");
-
-        addAll(Arrays.asList(course,
-                new Course(),
-                new Course(),
-                new Course(),
-                new Course()));
+        addAll(Arrays.asList(
+                new Course(ids[0], courses[0]),
+                new Course(ids[1], courses[1]),
+                new Course(ids[2], courses[2]),
+                new Course(ids[3], courses[3])));
     }
 }

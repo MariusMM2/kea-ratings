@@ -5,12 +5,12 @@ import uni.kea.marius.kearatings.databases.TeacherRepo;
 
 public class Teacher extends RateableItem {
 
-    public Teacher() {
-        super();
-    }
-
     Teacher(Parcel in) {
         super(in);
+    }
+
+    public Teacher(String uuidString, String name) {
+        super(uuidString, name);
     }
 
     @Override

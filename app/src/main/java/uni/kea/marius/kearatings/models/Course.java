@@ -5,8 +5,8 @@ import uni.kea.marius.kearatings.databases.CourseRepo;
 
 public class Course extends RateableItem {
 
-    public Course() {
-        super();
+    public Course(String uuidString, String name) {
+        super(uuidString, name);
     }
 
     Course(Parcel in) {
