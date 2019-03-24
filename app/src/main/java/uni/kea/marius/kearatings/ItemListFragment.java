@@ -96,6 +96,7 @@ public class ItemListFragment extends Fragment {
         private RateableItem mItem;
         private TextView mNameTextView;
         private RatingBar mRatingBar;
+        private TextView mReviewCount;
         private ImageButton mExpandButton;
 
         ItemHolder(LayoutInflater inflater, ViewGroup parent) {
@@ -103,11 +104,12 @@ public class ItemListFragment extends Fragment {
             mNameTextView = itemView.findViewById(R.id.item_name);
             mRatingBar = itemView.findViewById(R.id.item_rating);
             mExpandButton = itemView.findViewById(R.id.item_expand_button);
+            mReviewCount = itemView.findViewById(R.id.review_count);
         }
 
         private void bind(RateableItem item) {
             mItem = item;
-            ModelBinding.bindRepoItem(item, mNameTextView, mRatingBar, mExpandButton, this);
+            ModelBinding.bindRepoItem(item, mNameTextView, mRatingBar, mReviewCount, mExpandButton, this);
         }
 
         @Override

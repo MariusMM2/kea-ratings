@@ -49,6 +49,10 @@ public abstract class RateableItem implements RepoItem, Parcelable {
         }
     }
 
+    public int getScoreCount() {
+        return mScores.size();
+    }
+
     public float getRating() {
         return getOverallScore().getAverageRating();
     }
