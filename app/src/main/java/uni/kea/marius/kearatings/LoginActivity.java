@@ -17,17 +17,6 @@ import uni.kea.marius.kearatings.utils.AnimationUtils;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
@@ -35,7 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputEditText mPasswordField;
     private ImageView mLogoView;
     private View mProgressView;
-    private View mLoginFormView;
     private Button mSignButton;
 
     @Override
@@ -57,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mLogoView = findViewById(R.id.logo);
         mProgressView = findViewById(R.id.login_progress);
-        mLoginFormView = findViewById(R.id.login_form);
 
         mSignButton = findViewById(R.id.sign_in_button);
         mSignButton.setOnClickListener(view -> attemptLogin());
@@ -137,7 +124,6 @@ public class LoginActivity extends AppCompatActivity {
 
         mSignButton.setEnabled(!show);
         AnimationUtils.fade(mSignButton, duration, !show).start();
-        AnimationUtils.fade(mLoginFormView, duration, !show).start();
         AnimationUtils.fade(mLogoView, duration, !show).start();
         AnimationUtils.fade(mProgressView, duration, show).start();
     }
