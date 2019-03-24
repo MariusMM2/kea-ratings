@@ -17,7 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import uni.kea.marius.kearatings.database.Repo;
 import uni.kea.marius.kearatings.database.Repos;
-import uni.kea.marius.kearatings.model.RepoItem;
+import uni.kea.marius.kearatings.model.RateableItem;
 import uni.kea.marius.kearatings.util.ModelBinding;
 
 import java.util.List;
@@ -78,7 +78,7 @@ public class ItemListFragment extends Fragment {
 
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                RepoItem item = data.getParcelableExtra(DetailActivity.RESULT_ITEM_PARCEL);
+                RateableItem item = data.getParcelableExtra(DetailActivity.RESULT_ITEM_PARCEL);
                 mRepo.update(mSelectedItem, item);
                 mAdapter.notifyItemChanged(mSelectedItem);
             } else {
@@ -93,7 +93,7 @@ public class ItemListFragment extends Fragment {
     }
 
     private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private RepoItem mItem;
+        private RateableItem mItem;
         private TextView mNameTextView;
         private RatingBar mRatingBar;
         private ImageButton mExpandButton;
@@ -105,7 +105,7 @@ public class ItemListFragment extends Fragment {
             mExpandButton = itemView.findViewById(R.id.item_expand_button);
         }
 
-        private void bind(RepoItem item) {
+        private void bind(RateableItem item) {
             mItem = item;
             ModelBinding.bindRepoItem(item, mNameTextView, mRatingBar, mExpandButton, this);
         }
@@ -138,7 +138,7 @@ public class ItemListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull ItemHolder itemHolder, int i, @NonNull List<Object> payloads) {
-            RepoItem item = mRepo.read(i);
+            RateableItem item = (RateableItem) mRepo.read(i);
             itemHolder.bind(item);
         }
 

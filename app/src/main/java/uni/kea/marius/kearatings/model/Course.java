@@ -3,7 +3,7 @@ package uni.kea.marius.kearatings.model;
 import android.os.Parcel;
 import uni.kea.marius.kearatings.database.CourseRepo;
 
-public class Course extends RepoItem {
+public class Course extends RateableItem {
 
     public Course() {
         super();

@@ -12,8 +12,9 @@ import android.view.ViewGroup;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import uni.kea.marius.kearatings.model.RepoItem;
+import uni.kea.marius.kearatings.model.RateableItem;
 import uni.kea.marius.kearatings.model.Score;
+import uni.kea.marius.kearatings.model.User;
 
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,9 @@ public class DetailFragment extends Fragment {
 
     private static final String STATE_NEW_RATING = "new_rating";
 
-    private RepoItem mItem;
+    private User mCurrentUser;
+
+    private RateableItem mItem;
     private Score mNewRating;
     private boolean mHasNewRating;
 
@@ -42,18 +45,18 @@ public class DetailFragment extends Fragment {
      * Factory method to create a new instance of
      * the fragment using the provided item.
      *
-     * @param repoItem The parcelled item.
+     * @param rateableItem The parcelled item.
      * @return A new instance of fragment DetailFragment.
      */
-    static DetailFragment newInstance(RepoItem repoItem) {
+    static DetailFragment newInstance(RateableItem rateableItem) {
         DetailFragment fragment = new DetailFragment();
         Bundle args = new Bundle();
-        args.putParcelable(ARG_ITEM_PARCEL, repoItem);
+        args.putParcelable(ARG_ITEM_PARCEL, rateableItem);
         fragment.setArguments(args);
         return fragment;
     }
 
-    static RepoItem getItem(DetailFragment targetFragment) {
+    static RateableItem getItem(DetailFragment targetFragment) {
         return targetFragment.getArguments().getParcelable(ARG_ITEM_PARCEL);
     }
 
@@ -69,6 +72,8 @@ public class DetailFragment extends Fragment {
             Log.e(TAG, "No arguments found");
             throw new IllegalStateException("Fragment arguments cannot be null");
         }
+
+        mCurrentUser = UserLogin.getUser();
     }
 
     @Override
@@ -134,10 +139,14 @@ public class DetailFragment extends Fragment {
     }
 
     void newRating() {
-        mNewRating = mItem.newScoreTemplate();
+        if (!mItem.isRatedBy(mCurrentUser)) {
+            mNewRating = mItem.newScore(mCurrentUser);
+        } else {
+            mNewRating = mItem.getScore(mCurrentUser);
+        }
         mHasNewRating = true;
-        prepareNewRatingLayout();
 
+        prepareNewRatingLayout();
     }
 
     void defaultRating() {
@@ -147,7 +156,7 @@ public class DetailFragment extends Fragment {
     }
 
     void submitRating() {
-        if (mNewRating.isReady()) {
+        if (mNewRating.isReadyToSubmit()) {
             mItem.addScore(mNewRating);
             getActivity().onBackPressed();
             Toast.makeText(getContext(), "Rating saved.", Toast.LENGTH_SHORT).show();

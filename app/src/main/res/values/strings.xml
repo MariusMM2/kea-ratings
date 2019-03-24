@@ -30,5 +30,6 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
     <string name="email_structure">\@stud.kea.dk</string>
+    <string name="action_logout">Log Out</string>
 
 </resources>

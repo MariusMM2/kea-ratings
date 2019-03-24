@@ -4,9 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Score implements Parcelable {
     public static final float MAX = 5f;
@@ -14,37 +12,41 @@ public class Score implements Parcelable {
     public static final float STEP = .5f;
     private static final float DEFAULT = -1;
 
-    private Map<String, Float> ratings;
+    private UUID mId;
+    private UUID mUserId;
+    private Map<String, Float> mRatings;
 
-    Score(String[] topics) {
-        ratings = new LinkedHashMap<>(topics.length);
+    Score(String[] topics, User user) {
+        mId = UUID.randomUUID();
+        mUserId = user.getId();
+        mRatings = new LinkedHashMap<>(topics.length);
         for (String topic : topics) {
-            ratings.put(topic, DEFAULT);
+            mRatings.put(topic, DEFAULT);
         }
     }
 
     private Score() {
-        ratings = new LinkedHashMap<>();
+        mRatings = new LinkedHashMap<>();
     }
 
     public Map.Entry<String, Float> get(int position) {
-        Set<Map.Entry<String, Float>> mapSet = ratings.entrySet();
+        Set<Map.Entry<String, Float>> mapSet = mRatings.entrySet();
 
         return mapSet.toArray(new Map.Entry[]{})[position];
     }
 
     float getAverageRating() {
         float total = 0f;
-        String[] topics = ratings.keySet().toArray(new String[]{});
+        String[] topics = mRatings.keySet().toArray(new String[]{});
         for (String topic : topics) {
-            total += ratings.get(topic);
+            total += mRatings.get(topic);
         }
 
         return total / topics.length;
     }
 
     public int getSize() {
-        return ratings.size();
+        return mRatings.size();
     }
 
     static Score average(Score... scores) {
@@ -55,40 +57,63 @@ public class Score implements Parcelable {
             return result;
         }
 
-        String[] topics = scores[0].ratings.keySet().toArray(new String[]{});
+        String[] topics = scores[0].mRatings.keySet().toArray(new String[]{});
 
         for (String topic : topics) {
             float rating = 0f;
             for (Score score : scores) {
-                rating += score.ratings.get(topic);
+                rating += score.mRatings.get(topic);
             }
 
             //call put() of Map to bypass step bounding
-            result.ratings.put(topic, rating / scoreCount);
+            result.mRatings.put(topic, rating / scoreCount);
         }
 
         return result;
     }
 
-    public boolean isReady() {
-        return !ratings.values().contains(DEFAULT);
+    public boolean isReadyToSubmit() {
+        return !mRatings.values().contains(DEFAULT);
     }
 
     @NonNull
     @Override
     public String toString() {
         return "Score{" +
-                "ratings=" + ratings.toString() +
+                "mRatings=" + mRatings.toString() +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Score score = (Score) o;
+        return Objects.equals(mUserId, score.mUserId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mUserId);
     }
 
     private Score(Parcel in) {
         this();
+
+        long mostSigBits = in.readLong();
+        long leastSigBits = in.readLong();
+
+        mId = new UUID(mostSigBits, leastSigBits);
+
+        mostSigBits = in.readLong();
+        leastSigBits = in.readLong();
+
+        mUserId = new UUID(mostSigBits, leastSigBits);
         int size = in.readInt();
         for (int i = 0; i < size; i++) {
             String key = in.readString();
             Float value = in.readFloat();
-            ratings.put(key, value);
+            mRatings.put(key, value);
         }
     }
 
@@ -99,8 +124,12 @@ public class Score implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(ratings.size());
-        for (Map.Entry<String, Float> entry : ratings.entrySet()) {
+        dest.writeLong(mId.getMostSignificantBits());
+        dest.writeLong(mId.getLeastSignificantBits());
+        dest.writeLong(mUserId.getMostSignificantBits());
+        dest.writeLong(mUserId.getLeastSignificantBits());
+        dest.writeInt(mRatings.size());
+        for (Map.Entry<String, Float> entry : mRatings.entrySet()) {
             dest.writeString(entry.getKey());
             dest.writeFloat(entry.getValue());
         }

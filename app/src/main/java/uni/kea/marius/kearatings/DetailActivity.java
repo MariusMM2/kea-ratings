@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.ImageButton;
-import uni.kea.marius.kearatings.model.RepoItem;
+import uni.kea.marius.kearatings.model.RateableItem;
 import uni.kea.marius.kearatings.util.AnimationUtils;
 import uni.kea.marius.kearatings.util.ModelBinding;
 
@@ -23,7 +23,7 @@ public class DetailActivity extends SingleFragmentActivity {
 
     public static final String RESULT_ITEM_PARCEL = "result_item_parcel";
 
-    private RepoItem mItem;
+    private RateableItem mItem;
     private View mItemView;
     private ImageButton mImageButton;
     private CardView mFragmentCurtain;
@@ -38,9 +38,9 @@ public class DetailActivity extends SingleFragmentActivity {
         return R.layout.activity_detail;
     }
 
-    static Intent newIntent(Context packageContext, RepoItem repoItem) {
+    static Intent newIntent(Context packageContext, RateableItem rateableItem) {
         Intent intent = new Intent(packageContext, DetailActivity.class);
-        intent.putExtra(EXTRA_ITEM_PARCEL, repoItem);
+        intent.putExtra(EXTRA_ITEM_PARCEL, rateableItem);
 
         return intent;
     }

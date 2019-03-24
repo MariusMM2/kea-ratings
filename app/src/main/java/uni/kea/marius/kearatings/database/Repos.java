@@ -11,12 +11,13 @@ public class Repos {
     }
 
     @Retention(RetentionPolicy.SOURCE)
-    @IntDef(value = {COURSE_REPO, TEACHER_REPO})
+    @IntDef(value = {COURSE_REPO, TEACHER_REPO, USER_REPO})
     private @interface RepoType {
     }
 
-    private static final int COURSE_REPO = 0;
-    private static final int TEACHER_REPO = 1;
+    public static final int COURSE_REPO = 0;
+    public static final int TEACHER_REPO = 1;
+    public static final int USER_REPO = 2;
 
     public static Repo get(@RepoType int repo, Context context) {
         switch (repo) {
@@ -24,6 +25,8 @@ public class Repos {
                 return CourseRepo.getInstance(context);
             case TEACHER_REPO:
                 return TeacherRepo.getInstance(context);
+            case USER_REPO:
+                return UserRepo.getInstance(context);
             default:
                 throw new IllegalArgumentException();
         }
