@@ -1,6 +1,7 @@
 package uni.kea.marius.kearatings.model;
 
 import android.os.Parcel;
+import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import com.thedeanda.lorem.LoremIpsum;
@@ -76,7 +77,8 @@ public abstract class RepoItem implements Parcelable {
 
     RepoItem(Parcel in) {
         mType = getType();
-        mId = (UUID) in.readValue(UUID.class.getClassLoader());
+        ParcelUuid parcelUuid = in.readParcelable(ParcelUuid.class.getClassLoader());
+        mId = parcelUuid.getUuid();
         mName = in.readString();
         if (in.readByte() == 0x01) {
             mScores = new ArrayList<>();
@@ -94,7 +96,8 @@ public abstract class RepoItem implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(mType);
-        dest.writeValue(mId);
+        ParcelUuid parcelUuid = new ParcelUuid(mId);
+        parcelUuid.writeToParcel(dest, flags);
         dest.writeString(mName);
         if (mScores == null) {
             dest.writeByte((byte) (0x00));
