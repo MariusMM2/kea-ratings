@@ -10,4 +10,6 @@ public interface Repo {
     int size();
 
     void update(int index, RepoItem item);
+
+    void save();
 }

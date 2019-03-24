@@ -31,4 +31,9 @@ public class Repos {
                 throw new IllegalArgumentException();
         }
     }
+
+    public static void save(Context context) {
+        CourseRepo.getInstance(context).save();
+        TeacherRepo.getInstance(context).save();
+    }
 }

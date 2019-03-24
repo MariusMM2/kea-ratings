@@ -32,5 +32,7 @@ public class TeacherRepo extends AbstractRepo {
                 new Teacher(ids[5], teachers[5]),
                 new Teacher(ids[6], teachers[6]),
                 new Teacher(ids[7], teachers[7])));
+
+        getScores();
     }
 }

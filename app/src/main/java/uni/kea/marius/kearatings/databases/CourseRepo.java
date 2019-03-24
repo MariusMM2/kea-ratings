@@ -28,5 +28,7 @@ public class CourseRepo extends AbstractRepo {
                 new Course(ids[1], courses[1]),
                 new Course(ids[2], courses[2]),
                 new Course(ids[3], courses[3])));
+
+        getScores();
     }
 }

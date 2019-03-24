@@ -25,8 +25,18 @@ public class Score implements Parcelable {
         }
     }
 
+    public Score(String uuidString, String userUuidString) {
+        this();
+        mId = UUID.fromString(uuidString);
+        mUserId = UUID.fromString(userUuidString);
+    }
+
     private Score() {
         mRatings = new LinkedHashMap<>();
+    }
+
+    public void setRatings(Map<String, Float> ratings) {
+        mRatings = ratings;
     }
 
     public Map.Entry<String, Float> get(int position) {
@@ -74,6 +84,18 @@ public class Score implements Parcelable {
 
     public boolean isReadyToSubmit() {
         return !mRatings.values().contains(DEFAULT);
+    }
+
+    public UUID getId() {
+        return mId;
+    }
+
+    public Object getUserId() {
+        return mUserId;
+    }
+
+    public Map<String, Float> getRatings() {
+        return mRatings;
     }
 
     @NonNull

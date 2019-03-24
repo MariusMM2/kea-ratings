@@ -64,6 +64,10 @@ public abstract class RateableItem implements RepoItem, Parcelable {
         }
     }
 
+    public List<Score> getScores() {
+        return mScores;
+    }
+
     public void setName(String name) {
         mName = name;
     }
