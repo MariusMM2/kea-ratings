@@ -30,7 +30,7 @@ public class ItemListFragment extends Fragment {
 
     private Repo mRepo;
     private RecyclerView mRecyclerView;
-    private CourseAdapter mAdapter;
+    private ItemAdapter mAdapter;
     private int mSelectedItem;
 
     static ItemListFragment newInstance(int itemType) {
@@ -68,7 +68,7 @@ public class ItemListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         mRecyclerView = view.findViewById(R.id.recycler_view);
 
-        mAdapter = new CourseAdapter();
+        mAdapter = new ItemAdapter();
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -124,7 +124,7 @@ public class ItemListFragment extends Fragment {
         }
     }
 
-    private class CourseAdapter extends RecyclerView.Adapter<ItemHolder> {
+    private class ItemAdapter extends RecyclerView.Adapter<ItemHolder> {
 
         @NonNull
         @Override
