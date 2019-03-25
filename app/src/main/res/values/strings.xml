@@ -24,10 +24,10 @@
     <string name="action_logout">Log Out</string>
 
     <string-array name="courses">
-        <item>AP in Computer Science</item>
-        <item>AP in Multimedia Design</item>
-        <item>BA in Business Economics and IT</item>
-        <item>AP in Production Technology</item>
+        <item>Android</item>
+        <item>Angular</item>
+        <item>Python</item>
+        <item>Quantum Computing</item>
     </string-array>
 
     <string-array name="course_rating_topics">

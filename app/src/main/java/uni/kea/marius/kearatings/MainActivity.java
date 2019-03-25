@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import uni.kea.marius.kearatings.databases.Repos;
 
+/**
+ * Activity that holds the Courses and Teachers fragments in a PagerView
+ */
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity {
 
@@ -50,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        // Being the last activity to be closed, it should be the one
+        // to commit the changes to the database
         Repos.save(this);
         super.onDestroy();
     }
@@ -58,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        // Sets the user name in the ActionBar
         MenuItem menuItem = menu.findItem(R.id.user_name);
         menuItem.setTitle(UserLogin.getUser().getUserName());
         return true;
@@ -65,15 +72,13 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.user_name) {
             return true;
         } else if (id == R.id.action_logout) {
+            // Logs the user out and returns to the Login Activity
             UserLogin.logout();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
@@ -95,8 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // Return a ItemListFragment and attach the specific repository
 
+            // Return a ItemListFragment and attach the specific repository
             return ItemListFragment.newInstance(position);
         }
 

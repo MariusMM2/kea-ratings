@@ -2,6 +2,9 @@ package uni.kea.marius.kearatings.models;
 
 import java.util.UUID;
 
+/**
+ * Class that holds credentials related to an user
+ */
 public class User implements RepoItem {
     private UUID mId;
     private String mUserName;
@@ -39,6 +42,7 @@ public class User implements RepoItem {
         return mPassword;
     }
 
+    // Returns a default user, used as dummy for an average Score
     public static User none() {
         User noUser = new User();
         noUser.mId = null;

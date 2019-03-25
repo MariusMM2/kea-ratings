@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 
 import java.util.*;
 
+/**
+ * Class that holds ratings for different topics of an item
+ */
 public class Score implements Parcelable {
     public static final float MAX = 5f;
     public static final float MIN = 0.5f;
@@ -59,6 +62,8 @@ public class Score implements Parcelable {
         return mRatings.size();
     }
 
+    // given multiple Scores, return a Score holding the average
+    // of them
     static Score average(Score... scores) {
         Score result = new Score();
 
@@ -75,7 +80,6 @@ public class Score implements Parcelable {
                 rating += score.mRatings.get(topic);
             }
 
-            //call put() of Map to bypass step bounding
             result.mRatings.put(topic, rating / scoreCount);
         }
 
@@ -106,6 +110,7 @@ public class Score implements Parcelable {
                 '}';
     }
 
+    // Compares two given Scores by their user
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -119,6 +124,7 @@ public class Score implements Parcelable {
         return Objects.hash(mUserId);
     }
 
+    // Parcelable packaging and marshalling logic
     private Score(Parcel in) {
         this();
 

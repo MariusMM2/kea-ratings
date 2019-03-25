@@ -15,17 +15,28 @@ public class UserLogin {
     public static boolean login(Context context, String email, String password) {
         RepoItem[] usersArray = Repos.get(Repos.USER_REPO, context).readAll();
         User[] users = Arrays.copyOf(usersArray, usersArray.length, User[].class);
-        Arrays.sort(users, (o1, o2) -> o1.getEmail().compareTo(o2.getEmail()));
+//        Arrays.sort(users, (o1, o2) -> o1.getEmail().compareTo(o2.getEmail()));
         Log.i(TAG, "grabbed users from repo: " + Arrays.toString(users));
         User pendingValidation = new User(context.getString(R.string.email_structure), email, password);
         Log.i(TAG, "looking for " + pendingValidation.toString());
-        int userIndex = Arrays.binarySearch(users, pendingValidation, (o1, o2) -> {
-            if (o1.getEmail().equals(o2.getEmail()) &&
-                    o1.getPassword().equals(o2.getPassword())) {
-                return 0;
+
+        int userIndex = -1;
+
+        for (int i = 0; i < users.length; i++) {
+            if (pendingValidation.getEmail().equals(users[i].getEmail()) &&
+                    pendingValidation.getPassword().equals(users[i].getPassword())) {
+                userIndex = i;
+                break;
             }
-            return -1;
-        });
+        }
+
+//        int userIndex = Arrays.binarySearch(users, pendingValidation, (o1, o2) -> {
+//            if (o1.getEmail().equals(o2.getEmail()) &&
+//                    o1.getPassword().equals(o2.getPassword())) {
+//                return 0;
+//            }
+//            return -1;
+//        });
 
         if (userIndex < 0) {
             Log.w(TAG, String.format("User '%s' not found", pendingValidation));

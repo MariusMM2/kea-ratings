@@ -22,15 +22,22 @@ import uni.kea.marius.kearatings.utils.ModelBinding;
 
 import java.util.List;
 
+/**
+ * Fragment containing a list of items (either courses or teachers)
+ */
 @SuppressWarnings("FieldCanBeLocal")
 public class ItemListFragment extends Fragment {
     private static final String TAG = "ItemListFragment";
 
+    // The item_type argument is used to differentiate between the two
+    // repositories available, using the Repos class
     private static final String ARG_ITEM_TYPE = "item_type";
 
     private Repo mRepo;
     private RecyclerView mRecyclerView;
     private ItemAdapter mAdapter;
+    // Holds a reference to the item selected from the list,
+    // to know which one to update when returning from DetailActivity
     private int mSelectedItem;
 
     static ItemListFragment newInstance(int itemType) {
@@ -49,10 +56,13 @@ public class ItemListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            // Grab item_type from arguments and use it
+            // to reference the specific repository
             int itemType = getArguments().getInt(ARG_ITEM_TYPE);
             Log.d(TAG, "itemType: " + itemType);
             mRepo = Repos.get(itemType, getContext());
         } else {
+            // If no arguments were found, force close
             Log.e(TAG, "No arguments found");
             throw new IllegalStateException("Fragment arguments cannot be null");
         }
@@ -76,6 +86,8 @@ public class ItemListFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        // This request code is set by DetailActivity,
+        // whose data is the modified Item
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 RateableItem item = data.getParcelableExtra(DetailActivity.RESULT_ITEM_PARCEL);
@@ -92,6 +104,11 @@ public class ItemListFragment extends Fragment {
         }
     }
 
+    /**
+     * ViewHolder for a RateableItem.
+     * Holds the title, the rating, number of ratings
+     * and an action for the expand button.
+     */
     private class ItemHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private RateableItem mItem;
         private TextView mNameTextView;

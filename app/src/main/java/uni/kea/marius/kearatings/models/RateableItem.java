@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * An abstract item that can be graded using one or more scores
+ */
 public abstract class RateableItem implements RepoItem, Parcelable {
     private Type mType;
     private UUID mId;
@@ -38,6 +41,7 @@ public abstract class RateableItem implements RepoItem, Parcelable {
         return mName;
     }
 
+    // Add or update a score for the item
     public void addScore(Score score) {
         int scoreIndex = mScores.indexOf(score);
         if (scoreIndex < 0) {
@@ -72,14 +76,17 @@ public abstract class RateableItem implements RepoItem, Parcelable {
         mName = name;
     }
 
+    // Checks if the item has been rated by an user
     public boolean isRatedBy(User currentUser) {
         return mScores.contains(new Score(new String[]{}, currentUser));
     }
 
+    // Returns the score from an user
     public Score getScore(User currentUser) {
         return mScores.get(mScores.indexOf(new Score(new String[]{}, currentUser)));
     }
 
+    // Types of RateableItems possible
     public enum Type {
         COURSE,
         TEACHER
@@ -96,6 +103,7 @@ public abstract class RateableItem implements RepoItem, Parcelable {
                 '}';
     }
 
+    // Parcelable packaging and marshalling logic
     RateableItem(Parcel in) {
         mType = getType();
 

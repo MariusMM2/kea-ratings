@@ -31,5 +31,8 @@ class UserRepo extends AbstractRepo {
                 new User(ids[4], emailStructure, users[4], defaultPassword)));
     }
 
-
+    @Override
+    public void save() {
+        // no need to save scores here
+    }
 }

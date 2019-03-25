@@ -112,12 +112,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 4;
     }
 
     /**
-     * Shows the progress UI and hides the login form.
+     * Shows the progress UI and hides the login button and the KEA logo.
      */
     private void showProgress(final boolean show) {
         int duration = getResources().getInteger(android.R.integer.config_mediumAnimTime);
@@ -150,9 +149,10 @@ public class LoginActivity extends AppCompatActivity {
                 int duration = 2000;
                 long before = System.currentTimeMillis();
 
+                // Attempt to login the user
                 boolean result = UserLogin.login(LoginActivity.this, mEmail, mPassword);
 
-                // initialise repositories
+                // Initialise repositories
                 Repos.get(Repos.COURSE_REPO, LoginActivity.this);
                 Repos.get(Repos.TEACHER_REPO, LoginActivity.this);
                 Repos.get(Repos.USER_REPO, LoginActivity.this);

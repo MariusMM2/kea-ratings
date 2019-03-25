@@ -86,6 +86,12 @@ public class DetailActivity extends SingleFragmentActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        AnimationUtils.swapButtons(mNewRatingFAB, mSubmitRatingFAB, mFragment.hasNewRating());
+    }
+
+    @Override
     public void onAttachFragment(Fragment fragment) {
         super.onAttachFragment(fragment);
         mFragment = (DetailFragment) fragment;

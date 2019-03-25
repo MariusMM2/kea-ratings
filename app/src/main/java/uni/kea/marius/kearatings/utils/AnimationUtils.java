@@ -11,7 +11,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import uni.kea.marius.kearatings.R;
 
+/**
+ * Utility class for providing different animations
+ */
 public class AnimationUtils {
+
+    // Rotates an image button to a given direction, specified by XML
     public static void rotate(ImageButton imageButton, @AnimRes int direction) {
         Animation rotateAnim = android.view.animation.AnimationUtils.loadAnimation(imageButton.getContext(), direction);
         rotateAnim.setFillAfter(true);
@@ -19,6 +24,7 @@ public class AnimationUtils {
         imageButton.startAnimation(rotateAnim);
     }
 
+    // Used in swapping the new rating button with the submit rating button
     public static void swapButtons(ImageView view1, ImageView view2, boolean stage) {
         int duration = view1.getResources().getInteger(android.R.integer.config_mediumAnimTime);
 
@@ -53,6 +59,7 @@ public class AnimationUtils {
         animatorSet.start();
     }
 
+    // Used to fade in or out an item
     public static ObjectAnimator fade(View target, int duration, boolean show) {
         ObjectAnimator fade = ObjectAnimator.ofFloat(target, View.ALPHA, show ? 1f : 0f);
         fade.setDuration(duration);
