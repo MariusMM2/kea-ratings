@@ -23,10 +23,10 @@ The available courses, teachers and students that can log in are static, while t
 ##### Notes:
 * The currently available credentials are:
 Usernames:
-mari12df@stud.kea.dk
-mari13df@stud.kea.dk
-mari14df@stud.kea.dk
-mari15df@stud.kea.dk
-mari16df@stud.kea.dk
+stud1@stud.kea.dk
+stud2@stud.kea.dk
+stud3@stud.kea.dk
+stud4@stud.kea.dk
+stud5@stud.kea.dk
 
 Password: 12345 (same for all usernames)
