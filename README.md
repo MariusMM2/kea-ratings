@@ -21,12 +21,13 @@ The available courses, teachers and students that can log in are static, while t
 6. Submit your rating by tapping the new FAB in the corner. You will see the changes in the overall rating of the item after submitting.
 
 ##### Notes:
-* The currently available credentials are:
-Usernames:
-stud1@stud.kea.dk
-stud2@stud.kea.dk
-stud3@stud.kea.dk
-stud4@stud.kea.dk
-stud5@stud.kea.dk
-
-Password: 12345 (same for all usernames)
+\* The currently available credentials are:  
+Usernames:  
+stud1@stud.kea.dk  
+stud2@stud.kea.dk  
+stud3@stud.kea.dk  
+stud4@stud.kea.dk  
+stud5@stud.kea.dk  
+  
+Password:  
+12345 (same for all)
