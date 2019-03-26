@@ -75,11 +75,11 @@
     </string-array>
 
     <string-array name="users">
-        <item>mari12df@stud.kea.dk</item>
-        <item>mari13df@stud.kea.dk</item>
-        <item>mari14df@stud.kea.dk</item>
-        <item>mari15df@stud.kea.dk</item>
-        <item>mari16df@stud.kea.dk</item>
+        <item>stud1@stud.kea.dk</item>
+        <item>stud2@stud.kea.dk</item>
+        <item>stud3@stud.kea.dk</item>
+        <item>stud4@stud.kea.dk</item>
+        <item>stud5@stud.kea.dk</item>
     </string-array>
 
     <string name="default_password">12345</string>
